@@ -1,26 +1,185 @@
 @import "tailwindcss";
 
+/* =============================================
+   BUILDXUNIQUE — GLOBAL DESIGN SYSTEM
+   ============================================= */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* =============================================
+   DESIGN TOKENS
+   ============================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary */
+  --color-obsidian: #090909;
+  --color-yellow: #D7FF00;
+
+  /* Secondary */
+  --color-pink: #FF4F9A;
+  --color-warm-white: #F4F1EA;
+
+  /* Supporting */
+  --color-dark-grey: #171717;
+  --color-mid-grey: #858585;
+  --color-light-grey: #E8E6E1;
+
+  /* Semantic */
+  --background: #090909;
+  --foreground: #F4F1EA;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  /* Brand Colours */
+  --color-obsidian: #090909;
+  --color-yellow: #D7FF00;
+  --color-pink: #FF4F9A;
+  --color-warm-white: #F4F1EA;
+  --color-dark-grey: #171717;
+  --color-mid-grey: #858585;
+  --color-light-grey: #E8E6E1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #090909;
+  color: #F4F1EA;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================
+   TYPOGRAPHY
+   ============================================= */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.font-heading { font-family: 'Space Grotesk', sans-serif; }
+.font-body    { font-family: 'Inter', sans-serif; }
+.font-mono    { font-family: 'IBM Plex Mono', monospace; }
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+
+/* Label / Tag style */
+.label-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-mid-grey);
+}
+
+/* Yellow accent text */
+.text-accent { color: #D7FF00; }
+
+/* Pink highlight */
+.text-highlight { color: #FF4F9A; }
+
+/* Fine border */
+.border-fine { border-color: rgba(244, 241, 234, 0.1); }
+
+/* =============================================
+   SCROLLBAR
+   ============================================= */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #090909; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #D7FF00; }
+
+/* =============================================
+   SELECTION
+   ============================================= */
+::selection {
+  background-color: #D7FF00;
+  color: #090909;
+}
+
+/* =============================================
+   FOCUS STATES (Accessibility)
+   ============================================= */
+:focus-visible {
+  outline: 2px solid #D7FF00;
+  outline-offset: 3px;
+}
+
+/* =============================================
+   ANIMATIONS — Base
+   ============================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ropeSwing {
+  0%, 100% { d: path("M0,50 Q200,30 400,50 Q600,70 800,50"); }
+  50%       { d: path("M0,50 Q200,70 400,50 Q600,30 800,50"); }
+}
+
+/* =============================================
+   REDUCED MOTION
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* =============================================
+   UTILITY — CLIP PATHS
+   ============================================= */
+.clip-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.clip-reveal.revealed {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* =============================================
+   HORIZONTAL RULE
+   ============================================= */
+hr.fine {
+  border: none;
+  border-top: 1px solid rgba(244, 241, 234, 0.1);
 }
