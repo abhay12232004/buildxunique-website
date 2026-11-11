@@ -84,7 +84,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`h-full ${anton.variable} ${spaceGrotesk.variable}`}>
-      <body className="h-full antialiased font-body" style={{ background: "#090909", color: "#F4F1EA" }}>
+      <body className="h-full antialiased font-body" style={{ background: "#F5F5F2", color: "#111111" }}>
         <Navigation />
         <main>{children}</main>
         <Footer />
