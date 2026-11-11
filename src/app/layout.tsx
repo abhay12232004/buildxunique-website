@@ -4,6 +4,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://buildxunique.com"),
   title: {
     default: "BUILDXUNIQUE — Digital Design & Development Agency",
     template: "%s | BUILDXUNIQUE",
