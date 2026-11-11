@@ -469,7 +469,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-0">
-              {process_steps.map((step, i) => (
+              {process_steps.map((step) => (
                 <div
                   key={step.step}
                   className="process-step opacity-0 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 py-8 border-b"

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -21,11 +20,7 @@ const serviceLinks = [
 ];
 
 export function Footer() {
-  const [year, setYear] = useState(2026);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer
@@ -147,7 +142,7 @@ export function Footer() {
             className="text-xs"
             style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#858585" }}
           >
-            © {year} BUILDXUNIQUE. All rights reserved.
+            <span suppressHydrationWarning>© {currentYear} BUILDXUNIQUE. All rights reserved.</span>
           </p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

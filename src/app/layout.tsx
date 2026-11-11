@@ -1,7 +1,27 @@
 import type { Metadata } from "next";
+import { Anton, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+
+/* ─────────────────────────────────────────
+   FONT OPTIMIZATION  (next/font/google)
+   Anton   → display headlines
+   Space Grotesk → body / UI
+───────────────────────────────────────── */
+const anton = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-body",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://buildxunique.com"),
@@ -63,20 +83,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="h-full antialiased" style={{ background: "#090909", color: "#F4F1EA" }}>
+    <html lang="en" className={`h-full ${anton.variable} ${spaceGrotesk.variable}`}>
+      <body className="h-full antialiased font-body" style={{ background: "#090909", color: "#F4F1EA" }}>
         <Navigation />
         <main>{children}</main>
         <Footer />

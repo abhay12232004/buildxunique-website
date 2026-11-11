@@ -30,10 +30,12 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Close menu on route change */
-  useEffect(() => {
+  /* Close menu on route change (render phase update) */
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setIsMenuOpen(false);
-  }, [pathname]);
+  }
 
   /* Mobile menu animation */
   useGSAP(

@@ -225,7 +225,7 @@ export default function WorkPage() {
       >
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="space-y-12">
-            {filteredProjects.map((project, i) => (
+            {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="work-project opacity-0 border group cursor-pointer overflow-hidden"
