@@ -1,23 +1,28 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, ArrowDown, CheckCircle2 } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Explore Buildxunique's core digital services: custom website development, e-commerce storefronts, high-converting landing pages, UI/UX design, and ongoing performance optimization.",
-};
+gsap.registerPlugin(ScrollTrigger);
 
-const serviceDetails = [
+const services = [
   {
     id: "websites",
     number: "01",
     title: "WEBSITES & WEB EXPERIENCES",
-    tagline: "Custom digital platforms engineered for lasting authority and speed.",
-    problem:
-      "Generic templates fail to reflect your unique value proposition, load slowly, and fail to turn visitors into qualified leads.",
-    includes:
-      "Complete custom architecture, responsive layouts, motion choreography with GSAP, headless CMS configuration, and Core Web Vitals optimization.",
+    tagline: "Your digital front door.",
+    description:
+      "Your website is often the first impression of your business. We create custom digital experiences that combine thoughtful design, intuitive functionality and peak performance. Whether it's a corporate site, a portfolio, or a complex web application — we build it to move your business forward.",
+    features: [
+      "Custom design & development",
+      "CMS integration",
+      "Performance optimization",
+      "Analytics & tracking setup",
+    ],
     deliverables: [
       "Custom responsive design (Desktop, Tablet, Mobile)",
       "Next.js & TypeScript performant codebase",
@@ -25,16 +30,22 @@ const serviceDetails = [
       "Comprehensive Technical SEO & OpenGraph setup",
       "Cross-browser testing & accessibility conformance",
     ],
+    labels: ["STRATEGY", "DESIGN", "DEVELOPMENT"],
+    color: "#D7FF00",
   },
   {
     id: "ecommerce",
     number: "02",
     title: "E-COMMERCE DEVELOPMENT",
-    tagline: "Frictionless storefronts engineered for high average order values.",
-    problem:
-      "Clunky checkout funnels, slow product discovery, and generic layouts create cart abandonment and suppress conversion rates.",
-    includes:
-      "Modern headless or integrated storefronts, optimized product showcase pages, lightning-quick cart interactions, and secure payment processing.",
+    tagline: "Turn browsers into buyers.",
+    description:
+      "Turn your products into powerful online shopping experiences with intuitive storefronts, seamless customer journeys and scalable development. We build stores that look stunning, convert visitors, and grow with your business.",
+    features: [
+      "Shopify & custom stores",
+      "Payment gateway integration",
+      "Inventory management",
+      "Conversion optimization",
+    ],
     deliverables: [
       "Intuitive product filtering & category navigation",
       "Optimized mobile-first checkout flows",
@@ -42,16 +53,22 @@ const serviceDetails = [
       "Inventory sync & order webhook automation",
       "Speed-optimized image CDN delivery",
     ],
+    labels: ["ONLINE STORES", "PRODUCT EXPERIENCE", "CONVERSION"],
+    color: "#FF4F9A",
   },
   {
     id: "landing",
     number: "03",
     title: "LANDING PAGES",
-    tagline: "High-velocity campaign pages built to maximize paid traffic ROI.",
-    problem:
-      "Ad traffic wasted on bloated multi-purpose pages with confusing choices and weak conversion hierarchy.",
-    includes:
-      "Surgically focused single-page destinations with compelling typographic hierarchy, trust-building testimonials/proof points, and conversion anchors.",
+    tagline: "Make every click count.",
+    description:
+      "Make every click count with focused landing pages designed to communicate clearly, engage visitors and encourage action. Perfect for product launches, marketing campaigns, and lead generation.",
+    features: [
+      "Campaign-focused design",
+      "A/B testing ready",
+      "Lead capture forms",
+      "Speed optimized",
+    ],
     deliverables: [
       "Conversion-centered page structure",
       "Clear visual storytelling & benefit breakdowns",
@@ -59,16 +76,22 @@ const serviceDetails = [
       "Sub-second load times for paid campaign traffic",
       "Analytics tracking & conversion pixel integration",
     ],
+    labels: ["CAMPAIGNS", "PERFORMANCE", "CONVERSION"],
+    color: "#D7FF00",
   },
   {
     id: "uiux",
     number: "04",
     title: "UI/UX DESIGN & REDESIGN",
-    tagline: "Distinctive interfaces that turn complex workflows into natural user journeys.",
-    problem:
-      "Confusing user journeys, outdated visual styles, and disjointed interfaces that frustrate customers and erode brand trust.",
-    includes:
-      "End-to-end design sprints, wireframing, interactive prototypes in Figma, bespoke design systems, and rigorous design tokens for developer handoff.",
+    tagline: "Design that feels right.",
+    description:
+      "Make digital experiences easier to understand, more enjoyable to use and visually distinctive through thoughtful user interface and experience design. We transform complex workflows into intuitive journeys.",
+    features: [
+      "User research & personas",
+      "Wireframing & prototyping",
+      "Design systems",
+      "Usability testing",
+    ],
     deliverables: [
       "User journey mapping & information architecture",
       "Figma high-fidelity prototypes & responsive components",
@@ -76,16 +99,22 @@ const serviceDetails = [
       "Custom typography & color palette system",
       "Micro-interaction specifications & motion guides",
     ],
+    labels: ["USER EXPERIENCE", "INTERFACE", "STRATEGY"],
+    color: "#FF4F9A",
   },
   {
     id: "maintenance",
     number: "05",
     title: "MAINTENANCE & OPTIMIZATION",
-    tagline: "Continuous engineering support to keep your digital asset fast, secure, and fresh.",
-    problem:
-      "Websites degrade over time without proactive security updates, performance monitoring, and iterative enhancements.",
-    includes:
-      "Dedicated retainer support covering technical audits, uptime monitoring, dependency updates, new feature builds, and ongoing speed optimization.",
+    tagline: "Keep it running. Keep it growing.",
+    description:
+      "We keep your digital presence reliable, responsive and ready to grow through continuous improvements, performance optimization and ongoing support. Think of us as your digital maintenance crew.",
+    features: [
+      "Bug fixes & updates",
+      "Performance monitoring",
+      "Security patches",
+      "Content updates",
+    ],
     deliverables: [
       "Monthly performance & Core Web Vitals audit",
       "Dependency security patches & Next.js upgrades",
@@ -93,159 +122,415 @@ const serviceDetails = [
       "Uptime monitoring & rapid issue resolution",
       "Content updates & ongoing SEO refinement",
     ],
+    labels: ["PERFORMANCE", "SUPPORT", "OPTIMIZATION"],
+    color: "#D7FF00",
+  },
+];
+
+const process_steps = [
+  {
+    step: "01",
+    title: "Discovery",
+    description: "We learn about your business, your goals, and your audience.",
+  },
+  {
+    step: "02",
+    title: "Strategy",
+    description:
+      "We define the scope, timeline, and approach that fits your needs.",
+  },
+  {
+    step: "03",
+    title: "Design",
+    description:
+      "We create wireframes and visual designs that bring your vision to life.",
+  },
+  {
+    step: "04",
+    title: "Development",
+    description:
+      "We build your project with clean code, modern frameworks, and best practices.",
+  },
+  {
+    step: "05",
+    title: "Launch & Support",
+    description:
+      "We deploy, test, and provide ongoing support to ensure success.",
   },
 ];
 
 export default function ServicesPage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.fromTo(
+        ".services-hero-label",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 }
+      );
+      gsap.fromTo(
+        ".services-hero-title",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.9, delay: 0.2 }
+      );
+      gsap.fromTo(
+        ".services-hero-sub",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.7, delay: 0.4 }
+      );
+    },
+    { scope: heroRef }
+  );
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.utils.toArray<HTMLElement>(".service-card").forEach((card, i) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+            delay: i * 0.1,
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".process-step").forEach((step, i) => {
+        gsap.fromTo(
+          step,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: step,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+            delay: i * 0.08,
+          }
+        );
+      });
+    },
+    { scope: servicesRef }
+  );
+
   return (
-    <div className="pt-28 pb-24 md:pb-36" style={{ background: "#090909" }}>
-      {/* Services Hero */}
-      <section className="px-6 md:px-10 lg:px-16 mb-20 md:mb-32">
-        <div className="max-w-[1440px] mx-auto border-b pb-16 md:pb-24" style={{ borderColor: "rgba(244, 241, 234, 0.08)" }}>
-          <span
-            className="text-xs tracking-widest uppercase mb-4 inline-block"
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              color: "#858585",
-            }}
-          >
-            Capabilities & Solutions
-          </span>
+    <div>
+      {/* Hero */}
+      <section
+        ref={heroRef}
+        className="relative min-h-[70vh] flex flex-col justify-center overflow-hidden"
+        style={{ background: "#090909", paddingTop: "72px" }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 50% 60% at 30% 60%, rgba(215,255,0,0.04) 0%, transparent 70%)",
+          }}
+        />
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-20 w-full">
+          <div className="services-hero-label opacity-0 mb-6">
+            <span
+              className="inline-block text-xs tracking-widest uppercase border px-3 py-1.5"
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                color: "#858585",
+                borderColor: "rgba(133,133,133,0.3)",
+              }}
+            >
+              What We Do
+            </span>
+          </div>
+
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight mb-8"
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              color: "#F4F1EA",
-            }}
+            className="services-hero-title opacity-0 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight mb-8"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            THE RIGHT DIGITAL SOLUTIONS <br />
-            <span style={{ color: "#D7FF00" }}>FOR YOUR NEXT MOVE.</span>
+            <span style={{ color: "#F4F1EA" }}>THE RIGHT DIGITAL</span>
+            <br />
+            <span style={{ color: "#D7FF00" }}>SOLUTIONS FOR YOUR NEXT MOVE.</span>
           </h1>
+
           <p
-            className="text-lg md:text-xl max-w-2xl leading-relaxed"
+            className="services-hero-sub opacity-0 text-base md:text-lg max-w-xl leading-relaxed"
             style={{ color: "#858585" }}
           >
             From your first website to your next digital transformation, we help
             turn ambitious ideas into effective, scalable online experiences.
           </p>
+
+          <div className="mt-10 flex items-center gap-3">
+            <ArrowDown className="w-5 h-5 text-[#D7FF00] animate-bounce" />
+            <span
+              className="text-xs tracking-widest uppercase"
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                color: "#858585",
+              }}
+            >
+              Explore our services
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* Services Breakdown List */}
-      <section className="px-6 md:px-10 lg:px-16">
-        <div className="max-w-[1440px] mx-auto space-y-24 md:space-y-36">
-          {serviceDetails.map((service) => (
-            <div
-              key={service.id}
-              id={service.id}
-              className="scroll-mt-28 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 pb-20 border-b"
-              style={{ borderColor: "rgba(244, 241, 234, 0.08)" }}
-            >
-              {/* Left Column: Number and Title */}
-              <div className="lg:col-span-5">
-                <span
-                  className="text-xs tracking-widest uppercase block mb-3"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    color: "#D7FF00",
-                  }}
-                >
-                  SERVICE {service.number}
-                </span>
-                <h2
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6"
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    color: "#F4F1EA",
-                  }}
-                >
-                  {service.title}
-                </h2>
-                <p
-                  className="text-base md:text-lg leading-relaxed mb-8"
-                  style={{ color: "#858585" }}
-                >
-                  {service.tagline}
-                </p>
-
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-3 px-6 py-4 text-xs tracking-widest uppercase font-semibold transition-all duration-300"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    background: "#D7FF00",
-                    color: "#090909",
-                  }}
-                >
-                  Discuss This Service
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </Link>
-              </div>
-
-              {/* Right Column: Problem, Inclusions, and Deliverables */}
-              <div className="lg:col-span-7 space-y-8">
-                <div
-                  className="p-6 md:p-8 border"
-                  style={{
-                    background: "#0d0d0d",
-                    borderColor: "rgba(244, 241, 234, 0.08)",
-                  }}
-                >
-                  <h3
-                    className="text-xs tracking-widest uppercase mb-3"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#FF4F9A",
-                    }}
+      {/* Services Grid */}
+      <section
+        ref={servicesRef}
+        className="py-24 md:py-32"
+        style={{ background: "#090909" }}
+      >
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="space-y-8">
+            {services.map((service) => (
+              <div
+                key={service.id}
+                id={service.id}
+                className="service-card opacity-0 border group"
+                style={{ borderColor: "rgba(244,241,234,0.08)" }}
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                  {/* Number */}
+                  <div
+                    className="lg:col-span-2 p-8 flex items-start border-b lg:border-b-0 lg:border-r"
+                    style={{ borderColor: "rgba(244,241,234,0.08)" }}
                   >
-                    The Challenge Addressed
-                  </h3>
-                  <p className="text-sm md:text-base leading-relaxed" style={{ color: "#858585" }}>
-                    {service.problem}
-                  </p>
+                    <span
+                      className="text-7xl md:text-8xl font-bold leading-none opacity-20"
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        color: service.color,
+                      }}
+                    >
+                      {service.number}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="lg:col-span-10 p-8 md:p-12">
+                    <div
+                      className="text-xs tracking-widest uppercase mb-3"
+                      style={{
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        color: "#858585",
+                      }}
+                    >
+                      {service.tagline}
+                    </div>
+
+                    <h2
+                      className="text-3xl md:text-4xl font-bold mb-6 tracking-tight"
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        color: "#F4F1EA",
+                      }}
+                    >
+                      {service.title}
+                    </h2>
+
+                    <p
+                      className="text-base max-w-2xl mb-8 leading-relaxed"
+                      style={{ color: "#858585" }}
+                    >
+                      {service.description}
+                    </p>
+
+                    {/* Features */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                      {service.features.map((feature) => (
+                        <div
+                          key={feature}
+                          className="flex items-center gap-3"
+                        >
+                          <div
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ background: service.color }}
+                          />
+                          <span
+                            className="text-sm"
+                            style={{ color: "#F4F1EA" }}
+                          >
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Deliverables */}
+                    <div className="mb-8">
+                      <h3
+                        className="text-xs tracking-widest uppercase mb-4"
+                        style={{
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          color: "#D7FF00",
+                        }}
+                      >
+                        Key Deliverables
+                      </h3>
+                      <ul className="space-y-2">
+                        {service.deliverables.map((item, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-3 text-sm"
+                            style={{ color: "#858585" }}
+                          >
+                            <CheckCircle2
+                              className="w-4 h-4 flex-shrink-0 mt-0.5"
+                              style={{ color: service.color }}
+                            />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Labels + CTA */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      {service.labels.map((label) => (
+                        <span
+                          key={label}
+                          className="px-3 py-1 text-xs tracking-widest uppercase border"
+                          style={{
+                            fontFamily: "'IBM Plex Mono', monospace",
+                            color: service.color,
+                            borderColor:
+                              service.color === "#D7FF00"
+                                ? "rgba(215,255,0,0.3)"
+                                : "rgba(255,79,154,0.3)",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      ))}
+                      <Link
+                        href="/contact"
+                        className="group ml-auto inline-flex items-center gap-2 px-5 py-2 text-xs tracking-widest uppercase font-semibold transition-all duration-300"
+                        style={{
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          background: "#D7FF00",
+                          color: "#090909",
+                        }}
+                      >
+                        Discuss This Service
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            ))}
+          </div>
 
+          {/* Process */}
+          <div className="mt-32">
+            <div className="mb-16">
+              <div
+                className="text-xs tracking-widest uppercase mb-4"
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  color: "#858585",
+                }}
+              >
+                How We Work
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-bold tracking-tight"
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  color: "#F4F1EA",
+                }}
+              >
+                OUR PROCESS
+              </h2>
+            </div>
+
+            <div className="space-y-0">
+              {process_steps.map((step, i) => (
                 <div
-                  className="p-6 md:p-8 border"
-                  style={{
-                    background: "#0d0d0d",
-                    borderColor: "rgba(244, 241, 234, 0.08)",
-                  }}
+                  key={step.step}
+                  className="process-step opacity-0 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 py-8 border-b"
+                  style={{ borderColor: "rgba(244,241,234,0.08)" }}
                 >
-                  <h3
-                    className="text-xs tracking-widest uppercase mb-3"
+                  <span
+                    className="text-4xl font-bold opacity-20"
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#F4F1EA",
-                    }}
-                  >
-                    What&apos;s Included
-                  </h3>
-                  <p className="text-sm md:text-base leading-relaxed mb-6" style={{ color: "#858585" }}>
-                    {service.includes}
-                  </p>
-
-                  <h4
-                    className="text-xs tracking-widest uppercase mb-4"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "'Space Grotesk', sans-serif",
                       color: "#D7FF00",
                     }}
                   >
-                    Key Deliverables
-                  </h4>
-                  <ul className="space-y-3">
-                    {service.deliverables.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-sm text-[#858585]">
-                        <CheckCircle2 className="w-4 h-4 text-[#D7FF00] flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    {step.step}
+                  </span>
+                  <div>
+                    <h3
+                      className="text-xl font-bold mb-2 tracking-tight"
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        color: "#F4F1EA",
+                      }}
+                    >
+                      {step.title}
+                    </h3>
+                    <p className="text-sm max-w-md" style={{ color: "#858585" }}>
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-24 text-center">
+            <h3
+              className="text-3xl md:text-4xl font-bold mb-6 tracking-tight"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                color: "#F4F1EA",
+              }}
+            >
+              READY TO START?
+            </h3>
+            <p className="text-base mb-8 max-w-md mx-auto" style={{ color: "#858585" }}>
+              Tell us about your project and we&apos;ll get back to you within
+              24 hours.
+            </p>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                background: "#D7FF00",
+                color: "#090909",
+              }}
+            >
+              Start a Project
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
