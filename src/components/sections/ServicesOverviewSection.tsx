@@ -1,83 +1,142 @@
 "use client";
 
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Globe, ShoppingBag, LayoutTemplate, Palette, Cpu } from "lucide-react";
+import { ArrowUpRight, Plus, Minus, Check, Layers, Globe, ShoppingBag, Smartphone, Monitor } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const servicesList = [
+const services = [
   {
+    id: "websites",
     number: "01",
-    title: "Websites & Web Experiences",
-    description:
-      "Custom digital experiences combining thoughtful architecture, bespoke aesthetics, and high-performance engineering tailored to your brand.",
     icon: Globe,
-    href: "/services#websites",
-    tag: "Next.js / Creative Dev",
+    title: "BESPOKE WEBSITES",
+    category: "Brand & Flagship Platforms",
+    description:
+      "Custom-coded, high-performance web flagships that establish uncompromising brand authority. Designed from scratch in Figma and built natively on Next.js 16 with fluid GSAP motion.",
+    timeline: "3–6 Weeks",
+    deliverables: [
+      "Custom responsive design & design tokens",
+      "Next.js App Router architecture",
+      "Choreographed GSAP micro-interactions",
+      "Sub-second page speeds & SEO optimization",
+      "Sanity / Strapi CMS integration (optional)",
+    ],
+    techStack: ["Next.js 16", "TypeScript", "Tailwind CSS", "GSAP"],
+    planId: "launchpad",
   },
   {
+    id: "ecommerce",
     number: "02",
-    title: "E-Commerce Development",
-    description:
-      "Converting visitor curiosity into recurring revenue through frictionless storefronts, high-converting product pages, and scalable backend integrations.",
     icon: ShoppingBag,
-    href: "/services#ecommerce",
-    tag: "High Conversion / Stores",
+    title: "E-COMMERCE STORES",
+    category: "High-Yield Commerce Architecture",
+    description:
+      "Modern digital storefronts engineered for fast checkout funnels and effortless catalog exploration. Headless Shopify and custom store architectures optimized for maximum conversion.",
+    timeline: "4–8 Weeks",
+    deliverables: [
+      "Headless Shopify / custom cart architecture",
+      "Instant faceted search & filter states",
+      "One-click mobile checkout optimization",
+      "Product detail pages with interactive previews",
+      "Payment gateway integration (Stripe / Razorpay)",
+    ],
+    techStack: ["Shopify Headless", "Next.js", "Razorpay / Stripe", "Redis"],
+    planId: "enterprise",
   },
   {
+    id: "landing-pages",
     number: "03",
-    title: "Landing Pages",
+    icon: Smartphone,
+    title: "LANDING PAGES",
+    category: "High-Conversion Campaign Destinations",
     description:
-      "Campaign-focused destinations engineered for maximum clarity and immediate conversion. Every pixel, heading, and CTA works with surgical purpose.",
-    icon: LayoutTemplate,
-    href: "/services#landing",
-    tag: "Performance / Growth",
+      "Laser-focused single-purpose landing experiences built to convert traffic into qualified leads or paying customers. A/B test ready, ultra-fast, and obsessively refined.",
+    timeline: "1–2 Weeks",
+    deliverables: [
+      "Compelling narrative copy hierarchy",
+      "Frictionless lead capture & form validation",
+      "Fast CDN deployment (Vercel / Cloudflare)",
+      "Analytics & conversion tracking (PostHog, GA4)",
+      "100/100 Google Lighthouse performance score",
+    ],
+    techStack: ["Next.js", "Tailwind CSS", "GSAP", "PostHog"],
+    planId: "launchpad",
   },
   {
+    id: "uiux-design",
     number: "04",
-    title: "UI/UX Design & Redesign",
+    icon: Layers,
+    title: "UI/UX & DESIGN SYSTEMS",
+    category: "Systematic Product Architecture",
     description:
-      "Transforming complex workflows into intuitive, memorable interfaces. Modern design systems and micro-interactions that elevate your brand perception.",
-    icon: Palette,
-    href: "/services#uiux",
-    tag: "Design Systems / UX",
+      "Comprehensive design systems, component libraries, and interactive prototypes that bridge the gap between design vision and engineering velocity.",
+    timeline: "3–5 Weeks",
+    deliverables: [
+      "Figma component library with auto-layout",
+      "Standardized typography, spacing & color tokens",
+      "Interactive clickable prototypes",
+      "Developer handoff documentation & specs",
+      "Accessibility & WCAG AA contrast compliance",
+    ],
+    techStack: ["Figma", "Design Tokens", "Storybook", "WCAG 2.1"],
+    planId: "flagship",
   },
   {
+    id: "web-applications",
     number: "05",
-    title: "Maintenance & Optimization",
+    icon: Monitor,
+    title: "WEB APPLICATIONS & SAAS",
+    category: "Complex Frontend Engineering",
     description:
-      "Continuous speed tuning, security hardening, SEO enhancements, and technical support to ensure your digital asset never slows down.",
-    icon: Cpu,
-    href: "/services#maintenance",
-    tag: "Support / Continuous QA",
+      "Client portals, interactive dashboards, and SaaS marketing engines designed to make complex data workflows feel intuitive, responsive, and beautiful.",
+    timeline: "6–12 Weeks",
+    deliverables: [
+      "Modular dashboard layout & state management",
+      "Real-time interactive data visualizations",
+      "Role-based authentication & session controls",
+      "API orchestration & optimistic UI mutations",
+      "Comprehensive TypeScript end-to-end typing",
+    ],
+    techStack: ["React 19", "Next.js App Router", "Tailwind CSS", "Zustand"],
+    planId: "enterprise",
   },
 ];
 
 export function ServicesOverviewSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const [expandedId, setExpandedId] = useState<string>("websites");
 
   useGSAP(
     () => {
-      gsap.fromTo(
-        ".service-card",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.utils.toArray<HTMLElement>(".service-row").forEach((row) => {
+        gsap.fromTo(
+          row,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
     },
     { scope: containerRef }
   );
@@ -85,122 +144,157 @@ export function ServicesOverviewSection() {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-36 border-t"
-      style={{
-        background: "#090909",
-        borderColor: "rgba(244, 241, 234, 0.08)",
-      }}
+      aria-label="Core Studio Capabilities & Services"
+      className="relative py-24 sm:py-32 md:py-40 px-4 sm:px-6 md:px-10 lg:px-16 bg-[#F5F5F2] border-t border-[#DDDDDA]/70"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        {/* Section Header */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="max-w-[1440px] mx-auto">
+        {/* SECTION HEADER HUD */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-12 sm:mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
-            <span
-              className="text-xs tracking-widest uppercase mb-4 inline-block"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-              }}
-            >
-              Services Overview
-            </span>
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
+              <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
+              <span>004 // CORE DISCIPLINES</span>
+            </div>
             <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-none"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: "#F4F1EA",
-              }}
+              className="text-[clamp(2.5rem,6vw,5.5rem)] font-normal text-[#111111] uppercase leading-[0.95] tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              WHAT WE BRING <br />
-              <span style={{ color: "#D7FF00" }}>TO THE TABLE.</span>
+              SERVICES.
             </h2>
           </div>
+
           <p
-            className="text-sm md:text-base max-w-sm leading-relaxed"
-            style={{ color: "#858585" }}
+            className="max-w-md text-sm sm:text-base text-[#777777] leading-relaxed"
+            style={{ fontFamily: "var(--font-body)" }}
           >
-            Everything your business needs to establish, scale, and dominate its
-            online category with uncompromising digital polish.
+            We don’t offer twenty different half-hearted services. We specialize strictly in end-to-end digital craft: design, front-end architecture, and commercial execution.
           </p>
         </div>
 
-        {/* Editorial Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicesList.map((service, index) => {
+        {/* INTERACTIVE EDITORIAL ACCORDION LIST */}
+        <div className="border-t border-[#DDDDDA] divide-y divide-[#DDDDDA]">
+          {services.map((service) => {
+            const isExpanded = expandedId === service.id;
             const Icon = service.icon;
+
             return (
               <div
-                key={service.number}
-                className={`service-card opacity-0 group relative p-8 md:p-10 border transition-all duration-500 hover:border-[#D7FF00]/50 flex flex-col justify-between ${
-                  index === 0 ? "lg:col-span-2" : ""
-                }`}
-                style={{
-                  background: "#0d0d0d",
-                  borderColor: "rgba(244, 241, 234, 0.08)",
-                }}
+                key={service.id}
+                className={cn(
+                  "service-row transition-all duration-300",
+                  isExpanded ? "bg-white/80 rounded-2xl p-6 sm:p-8 my-4 shadow-[0_8px_30px_rgba(17,17,17,0.04)] border border-[#DDDDDA]" : "py-6 sm:py-8 px-4"
+                )}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-8">
+                {/* Clickable Header Row */}
+                <button
+                  type="button"
+                  onClick={() => setExpandedId(isExpanded ? "" : service.id)}
+                  className="w-full flex items-center justify-between text-left group focus-visible:outline-2 focus-visible:outline-[#FF7139] rounded-xs"
+                  aria-expanded={isExpanded}
+                >
+                  <div className="flex items-center gap-6 sm:gap-8">
                     <span
-                      className="text-xs tracking-widest uppercase"
-                      style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
-                        color: "#858585",
-                      }}
+                      className="text-2xl sm:text-3xl font-bold text-[#FF7139] w-8"
+                      style={{ fontFamily: "var(--font-display)" }}
                     >
                       {service.number}
                     </span>
-                    <span
-                      className="text-xs tracking-widest uppercase px-2.5 py-1 border"
-                      style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
-                        color: "#D7FF00",
-                        borderColor: "rgba(215, 255, 0, 0.2)",
-                      }}
-                    >
-                      {service.tag}
-                    </span>
-                  </div>
-
-                  <div className="mb-6 flex items-center gap-4">
-                    <div
-                      className="w-12 h-12 rounded-none border flex items-center justify-center transition-colors duration-300 group-hover:border-[#D7FF00] group-hover:bg-[#D7FF00]/10"
-                      style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                    >
-                      <Icon className="w-5 h-5 text-[#F4F1EA] group-hover:text-[#D7FF00] transition-colors" />
+                    <div className="p-2.5 rounded-xl bg-[#F5F5F2] group-hover:bg-[#FF7139] group-hover:text-white transition-colors duration-200 hidden sm:flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[#111111] group-hover:text-white transition-colors duration-200" />
                     </div>
-                    <h3
-                      className="text-2xl font-bold tracking-tight"
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: "#F4F1EA",
-                      }}
-                    >
-                      {service.title}
-                    </h3>
+                    <div>
+                      <h3
+                        className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#111111] uppercase tracking-tight group-hover:text-[#FF7139] transition-colors"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        {service.title}
+                      </h3>
+                      <p className="text-xs font-mono text-[#777777] uppercase tracking-wider mt-0.5">
+                        {service.category}
+                      </p>
+                    </div>
                   </div>
 
-                  <p
-                    className="text-sm md:text-base leading-relaxed mb-8"
-                    style={{ color: "#858585" }}
-                  >
-                    {service.description}
-                  </p>
-                </div>
+                  <div className="flex items-center gap-4">
+                    <span className="hidden sm:inline-block text-xs font-mono text-[#777777] border border-[#DDDDDA] px-3 py-1 rounded-full">
+                      EST: {service.timeline}
+                    </span>
+                    <div className="p-2 rounded-full border border-[#DDDDDA] bg-white group-hover:border-[#111111] transition-colors">
+                      {isExpanded ? (
+                        <Minus className="w-4 h-4 text-[#111111]" />
+                      ) : (
+                        <Plus className="w-4 h-4 text-[#111111]" />
+                      )}
+                    </div>
+                  </div>
+                </button>
 
-                <div className="pt-6 border-t" style={{ borderColor: "rgba(244, 241, 234, 0.06)" }}>
-                  <Link
-                    href={service.href}
-                    className="inline-flex items-center gap-2 text-xs tracking-widest uppercase transition-colors duration-300 hover:text-[#D7FF00]"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#F4F1EA",
-                    }}
-                  >
-                    Learn More
-                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </Link>
-                </div>
+                {/* Expanded Detailed Content Drawer */}
+                {isExpanded && (
+                  <div className="pt-8 mt-6 border-t border-[#DDDDDA]/60 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fadeIn">
+                    {/* Left: Overview & Timeline */}
+                    <div className="lg:col-span-5 flex flex-col justify-between">
+                      <p
+                        className="text-sm sm:text-base text-[#777777] leading-relaxed mb-6"
+                        style={{ fontFamily: "var(--font-body)" }}
+                      >
+                        {service.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-8">
+                        {service.techStack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 rounded-full bg-[#F5F5F2] text-[10px] font-mono uppercase text-[#111111] border border-[#DDDDDA]"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <MagneticButton strength={0.3}>
+                          <Link
+                            href={`/checkout?plan=${service.planId}`}
+                            data-cursor="BOOK"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111111] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#FF7139] transition-colors"
+                          >
+                            <span>Book This Service</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </MagneticButton>
+
+                        <Link
+                          href="/pricing"
+                          className="text-xs font-mono text-[#777777] hover:text-[#111111] transition-colors uppercase tracking-wider"
+                        >
+                          View Pricing Tier →
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Right: Deliverables Checklist */}
+                    <div className="lg:col-span-7 bg-[#F5F5F2] p-6 rounded-xl border border-[#DDDDDA]">
+                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF7139] font-bold block mb-4">
+                        KEY DELIVERABLES & INCLUSIONS
+                      </span>
+                      <ul className="space-y-3">
+                        {service.deliverables.map((item) => (
+                          <li
+                            key={item}
+                            className="flex items-start gap-3 text-xs sm:text-sm text-[#111111]"
+                            style={{ fontFamily: "var(--font-body)" }}
+                          >
+                            <span className="w-4 h-4 rounded-full bg-white border border-[#DDDDDA] flex items-center justify-center shrink-0 mt-0.5 text-[#FF7139]">
+                              <Check className="w-2.5 h-2.5" />
+                            </span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

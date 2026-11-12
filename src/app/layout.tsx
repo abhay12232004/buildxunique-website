@@ -3,6 +3,8 @@ import { Anton, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
 
 /* ─────────────────────────────────────────
    FONT OPTIMIZATION  (next/font/google)
@@ -13,14 +15,14 @@ const anton = Anton({
   weight: "400",
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-display",
+  variable: "--font-anton",
 });
 
 const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-body",
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -84,7 +86,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`h-full ${anton.variable} ${spaceGrotesk.variable}`}>
-      <body className="h-full antialiased font-body" style={{ background: "#F5F5F2", color: "#111111" }}>
+      <body className="h-full antialiased font-body relative" style={{ background: "#F5F5F2", color: "#111111" }}>
+        <NoiseOverlay />
+        <CustomCursor />
         <Navigation />
         <main>{children}</main>
         <Footer />

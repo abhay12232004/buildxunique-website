@@ -1,35 +1,37 @@
-# DEVELOPER HANDOFF PROTOCOL — BUILDXUNIQUE
+# BUILDXUNIQUE — HANDOFF DOCUMENTATION
+**Date:** November 12, 2026
 
-## 1. Handover Information
-- **Last Completed Task**: Phase 2 — Main Navbar & Hero Section Redesign
-- **Current Task**: Phase 3 — Pinned Rope-Pulling Signature Experience Redesign (Awaiting User Command)
-- **Responsible Developer**: Senior UI/UX Designer & Frontend Design System Engineer
-- **Current Branch**: `abhay`
-- **Target Branch**: `origin/abhay`
+## 1. Project Overview
+Buildxunique is an independent digital design and frontend engineering studio web product built with Next.js 16 (App Router), React 19, TypeScript, GSAP, and Tailwind CSS.
 
----
+## 2. Design Tokens
+- **Canvas:** `#F5F5F2` (Warm White) with tactile film grain overlay
+- **Cards/Surfaces:** `#FFFFFF` (Pure White) with `#DDDDDA` hairline borders
+- **Primary Text:** `#111111` (Near Black)
+- **Primary Accent:** `#FF7139` (Signal Orange)
+- **Secondary Accent:** `#F4CE36` (Warm Yellow)
+- **Muted Text:** `#777777` (Muted Grey)
+- **Display Font:** Anton
+- **Body & UI Font:** Space Grotesk
 
-## 2. Completed in Phase 2
-- **Main Navbar**:
-  - Wordmark in Anton with Orange accent.
-  - Active page indicators & hover underline animation.
-  - Space Grotesk typography, warm-white glassmorphism background (`#F5F5F2`), hairline border (`#DDDDDA`).
-  - Rounded pill CTA button with arrow hover nudge.
-  - Accessible mobile drawer with keyboard Escape listener.
-- **Hero Section**:
-  - Centered DOVV Studio-inspired composition on `#F5F5F2` Warm White canvas.
-  - 3-line oversized headline:
-    - Line 1: `WE BUILD` (Anton, Near Black `#111111`)
-    - Line 2: Dynamic Orange (`#FF7139`) vertical roller across 5 services: `WEBSITES.`, `E-COMMERCE.`, `LANDING PAGES.`, `UI/UX DESIGN.`, `WEB APPLICATIONS.`
-    - Line 3: `THAT MOVE PEOPLE.` (Anton, Near Black `#111111`)
-  - GSAP vertical slide and fade with upward exit, zero layout jumping, and tab visibility pause.
-  - Approved supporting copy in Space Grotesk.
-  - Two functional pill CTA buttons: `START A PROJECT` and `EXPLORE OUR WORK`.
-- **Quality Gates**:
-  - `npm run build`: **0 errors** (all 11 routes built successfully).
-  - `npm run lint`: **0 errors, 0 warnings**.
+## 3. Key Components & Architecture
+- `src/components/ui/CustomCursor.tsx`: Smooth desktop custom cursor reacting to `data-cursor` attributes.
+- `src/components/ui/MagneticButton.tsx`: GSAP physics magnetic button wrapper.
+- `src/components/ui/NoiseOverlay.tsx`: Inline SVG noise filter texture.
+- `src/components/sections/HeroSection.tsx`: Live IST clock, rotating Anton service text, kinetic metric pills.
+- `src/components/sections/HumanVisualSection.tsx`: Kinetic 3D spatial monolith with mouse-tracking tilt and scroll-scrub text reveal.
+- `src/components/sections/PortfolioSection.tsx`: Grid & List view modes, device previews, category filters.
+- `src/components/sections/ServicesOverviewSection.tsx`: Interactive expandable editorial accordion.
+- `src/components/sections/WhySection.tsx`: Side-by-side comparison matrix.
+- `src/components/sections/ProcessSection.tsx`: 4-step milestone pipeline.
+- `src/components/sections/AboutSection.tsx`: Studio manifesto and tech capabilities.
+- `src/components/sections/FaqSection.tsx`: Category-filtered accessible accordion.
+- `src/components/sections/ContactSection.tsx`: Interactive budget & service chips, validation, honeypot protection.
+- `src/components/layout/Footer.tsx`: Massive Anton sign-off, live world clock, magnetic top trigger.
+- `src/app/pricing/page.tsx`: 3 tiered packages with 50% deposit toggle.
+- `src/app/checkout/page.tsx`: Razorpay payment integration with automatic demo mode fallback.
 
----
-
-## 3. Exact Next Action (Phase 3)
-- Wait for user instruction to begin **Phase 3: Pinned Rope-Pulling Signature Experience Redesign**.
+## 4. Verification Commands
+- `npm run lint` — 0 errors, 0 warnings.
+- `npm run build` — 100% successful production build (18 routes).
+- Dev server running on `http://localhost:3000`.

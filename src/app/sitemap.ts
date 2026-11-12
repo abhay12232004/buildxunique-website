@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://buildxunique.com";
-  const routes = ["", "/services", "/work", "/about", "/contact"];
+  const routes = ["", "/services", "/work", "/pricing", "/about", "/contact"];
 
   return routes.map((route) => ({
     url: `${baseUrl}${route}`,

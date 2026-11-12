@@ -14,148 +14,135 @@ const services = [
     id: "websites",
     number: "01",
     title: "WEBSITES & WEB EXPERIENCES",
-    tagline: "Your digital front door.",
+    tagline: "Your digital flagship headquarters.",
     description:
-      "Your website is often the first impression of your business. We create custom digital experiences that combine thoughtful design, intuitive functionality and peak performance. Whether it's a corporate site, a portfolio, or a complex web application — we build it to move your business forward.",
+      "Your website is the single most authoritative touchpoint for your brand. We build custom digital experiences that marry bespoke editorial aesthetics with performant modern engineering. From corporate platforms to creative portfolios, we build to move your business forward.",
     features: [
-      "Custom design & development",
-      "CMS integration",
-      "Performance optimization",
-      "Analytics & tracking setup",
+      "Custom layout architecture & design systems",
+      "Headless CMS integration (Sanity / Strapi)",
+      "Core Web Vitals sub-second optimization",
+      "Analytics & conversion tracking instrumentation",
     ],
     deliverables: [
       "Custom responsive design (Desktop, Tablet, Mobile)",
-      "Next.js & TypeScript performant codebase",
-      "Interactive micro-animations & scroll interactions",
-      "Comprehensive Technical SEO & OpenGraph setup",
+      "Next.js 16 & TypeScript performant codebase",
+      "GSAP scroll-choreographed micro-interactions",
+      "Technical SEO & OpenGraph metadata setup",
       "Cross-browser testing & accessibility conformance",
     ],
     labels: ["STRATEGY", "DESIGN", "DEVELOPMENT"],
-    color: "#D7FF00",
+    accent: "#FF7139",
   },
   {
     id: "ecommerce",
     number: "02",
     title: "E-COMMERCE DEVELOPMENT",
-    tagline: "Turn browsers into buyers.",
+    tagline: "Turn browsers into high-value buyers.",
     description:
-      "Turn your products into powerful online shopping experiences with intuitive storefronts, seamless customer journeys and scalable development. We build stores that look stunning, convert visitors, and grow with your business.",
+      "Transform your catalog into a frictionless digital storefront with rapid instant-filtering, intuitive checkout funnels, and scalable backend architecture. We build online stores that elevate brand prestige and drive revenue.",
     features: [
-      "Shopify & custom stores",
-      "Payment gateway integration",
-      "Inventory management",
-      "Conversion optimization",
+      "Custom Shopify & Next.js storefronts",
+      "Razorpay / Stripe multi-gateway integration",
+      "Real-time inventory sync & webhook automation",
+      "Conversion rate optimization & checkout tuning",
     ],
     deliverables: [
-      "Intuitive product filtering & category navigation",
-      "Optimized mobile-first checkout flows",
-      "Payment gateway integration (Stripe, Razorpay, etc.)",
-      "Inventory sync & order webhook automation",
-      "Speed-optimized image CDN delivery",
+      "Instant product discovery & filtering filters",
+      "Mobile-first streamlined checkout flows",
+      "Secure webhook verification pipelines",
+      "CDN speed-optimized image asset pipelines",
     ],
-    labels: ["ONLINE STORES", "PRODUCT EXPERIENCE", "CONVERSION"],
-    color: "#FF4F9A",
+    labels: ["ONLINE STORES", "HIGH CONVERSION", "INTEGRATIONS"],
+    accent: "#111111",
   },
   {
     id: "landing",
     number: "03",
     title: "LANDING PAGES",
-    tagline: "Make every click count.",
+    tagline: "Make every ad dollar and click count.",
     description:
-      "Make every click count with focused landing pages designed to communicate clearly, engage visitors and encourage action. Perfect for product launches, marketing campaigns, and lead generation.",
+      "Surgically focused single-page destinations designed to communicate clearly, capture qualified leads, and maximize return on paid ad spend. Every headline, visual anchor, and CTA is placed with clear conversion intent.",
     features: [
-      "Campaign-focused design",
-      "A/B testing ready",
-      "Lead capture forms",
-      "Speed optimized",
+      "Conversion-centered narrative structure",
+      "A/B test ready modular component blocks",
+      "Direct CRM & webhook lead routing",
+      "Sub-second load times for mobile ad traffic",
     ],
     deliverables: [
-      "Conversion-centered page structure",
-      "Clear visual storytelling & benefit breakdowns",
-      "A/B test ready modular component blocks",
-      "Sub-second load times for paid campaign traffic",
-      "Analytics tracking & conversion pixel integration",
+      "Single-page conversion blueprint",
+      "High-impact typographic scale & benefit breakdown",
+      "Analytics & tracking pixel integration",
+      "Spam-protected contact & enquiry forms",
     ],
-    labels: ["CAMPAIGNS", "PERFORMANCE", "CONVERSION"],
-    color: "#D7FF00",
+    labels: ["CAMPAIGNS", "PAID TRAFFIC", "LEAD GEN"],
+    accent: "#FF7139",
   },
   {
     id: "uiux",
     number: "04",
     title: "UI/UX DESIGN & REDESIGN",
-    tagline: "Design that feels right.",
+    tagline: "Interfaces that turn complexity into natural journeys.",
     description:
-      "Make digital experiences easier to understand, more enjoyable to use and visually distinctive through thoughtful user interface and experience design. We transform complex workflows into intuitive journeys.",
+      "Make complex digital workflows easier to navigate, more enjoyable to use, and visually distinctive. We transform outdated or fragmented legacy web apps into unified, memorable experiences through rigorous design systems.",
     features: [
-      "User research & personas",
-      "Wireframing & prototyping",
-      "Design systems",
-      "Usability testing",
+      "User research & information architecture",
+      "Figma interactive prototypes & component libraries",
+      "Design tokens for frictionless developer handoff",
+      "Usability testing & accessibility audits",
     ],
     deliverables: [
-      "User journey mapping & information architecture",
-      "Figma high-fidelity prototypes & responsive components",
-      "Comprehensive design token documentation",
-      "Custom typography & color palette system",
-      "Micro-interaction specifications & motion guides",
+      "Complete Figma design system library",
+      "Clickable responsive prototypes",
+      "Micro-interaction & motion specification guides",
+      "Comprehensive typography & token documentation",
     ],
-    labels: ["USER EXPERIENCE", "INTERFACE", "STRATEGY"],
-    color: "#FF4F9A",
+    labels: ["USER EXPERIENCE", "DESIGN SYSTEMS", "PROTOTYPING"],
+    accent: "#F4CE36",
   },
   {
     id: "maintenance",
     number: "05",
     title: "MAINTENANCE & OPTIMIZATION",
-    tagline: "Keep it running. Keep it growing.",
+    tagline: "Continuous care so your asset never slows down.",
     description:
-      "We keep your digital presence reliable, responsive and ready to grow through continuous improvements, performance optimization and ongoing support. Think of us as your digital maintenance crew.",
+      "We keep your digital presence fast, secure, and ready to scale through proactive performance audits, security patching, and ongoing engineering improvements. Think of us as your dedicated digital maintenance crew.",
     features: [
-      "Bug fixes & updates",
-      "Performance monitoring",
-      "Security patches",
-      "Content updates",
+      "Next.js framework & dependency security patches",
+      "Ongoing Core Web Vitals speed monitoring",
+      "Dedicated monthly hours for design & dev requests",
+      "Content updates & ongoing technical SEO audits",
     ],
     deliverables: [
-      "Monthly performance & Core Web Vitals audit",
-      "Dependency security patches & Next.js upgrades",
-      "Dedicated monthly hours for design & dev requests",
-      "Uptime monitoring & rapid issue resolution",
-      "Content updates & ongoing SEO refinement",
+      "Monthly speed & security health audit",
+      "Continuous uptime monitoring & rapid fix SLA",
+      "Feature iteration & component additions",
+      "Priority technical emergency support",
     ],
-    labels: ["PERFORMANCE", "SUPPORT", "OPTIMIZATION"],
-    color: "#D7FF00",
+    labels: ["PERFORMANCE", "RETAINER", "SECURITY"],
+    accent: "#111111",
   },
 ];
 
 const process_steps = [
   {
     step: "01",
-    title: "Discovery",
-    description: "We learn about your business, your goals, and your audience.",
+    title: "Discover",
+    description: "We learn about your business, commercial goals, competitor landscape, and target audience.",
   },
   {
     step: "02",
-    title: "Strategy",
-    description:
-      "We define the scope, timeline, and approach that fits your needs.",
+    title: "Design",
+    description: "We create interactive Figma prototypes, typographic systems, and high-fidelity layouts.",
   },
   {
     step: "03",
-    title: "Design",
-    description:
-      "We create wireframes and visual designs that bring your vision to life.",
+    title: "Develop",
+    description: "We build your project using clean Next.js 16, TypeScript, and fluid GSAP motion curves.",
   },
   {
     step: "04",
-    title: "Development",
-    description:
-      "We build your project with clean code, modern frameworks, and best practices.",
-  },
-  {
-    step: "05",
     title: "Launch & Support",
-    description:
-      "We deploy, test, and provide ongoing support to ensure success.",
+    description: "We conduct cross-device QA, verify Core Web Vitals, deploy, and provide continuous support.",
   },
 ];
 
@@ -171,65 +158,30 @@ export default function ServicesPage() {
       if (prefersReduced) return;
 
       gsap.fromTo(
-        ".services-hero-label",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 }
-      );
-      gsap.fromTo(
         ".services-hero-title",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.9, delay: 0.2 }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
       );
       gsap.fromTo(
         ".services-hero-sub",
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.7, delay: 0.4 }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" }
       );
-    },
-    { scope: heroRef }
-  );
 
-  useGSAP(
-    () => {
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      if (prefersReduced) return;
-
-      gsap.utils.toArray<HTMLElement>(".service-card").forEach((card, i) => {
+      gsap.utils.toArray<HTMLElement>(".service-card").forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 60 },
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: "power3.out",
+            duration: 0.75,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: card,
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
-            delay: i * 0.1,
-          }
-        );
-      });
-
-      gsap.utils.toArray<HTMLElement>(".process-step").forEach((step, i) => {
-        gsap.fromTo(
-          step,
-          { opacity: 0, x: -30 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: step,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-            delay: i * 0.08,
           }
         );
       });
@@ -238,299 +190,203 @@ export default function ServicesPage() {
   );
 
   return (
-    <div>
+    <div className="pt-28 pb-24 md:pb-36 bg-[#F5F5F2] min-h-screen">
       {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative min-h-[70vh] flex flex-col justify-center overflow-hidden"
-        style={{ background: "#090909", paddingTop: "72px" }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 60% at 30% 60%, rgba(215,255,0,0.04) 0%, transparent 70%)",
-          }}
-        />
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-20 w-full">
-          <div className="services-hero-label opacity-0 mb-6">
+      <section ref={heroRef} className="px-6 md:px-10 lg:px-16 mb-16 md:mb-24">
+        <div className="max-w-[1440px] mx-auto border-b border-[#DDDDDA] pb-12 sm:pb-16">
+          <div className="flex items-center gap-2 mb-4">
             <span
-              className="inline-block text-xs tracking-widest uppercase border px-3 py-1.5"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-                borderColor: "rgba(133,133,133,0.3)",
-              }}
+              className="text-xs uppercase tracking-[0.16em] font-semibold text-[#777777]"
+              style={{ fontFamily: "var(--font-body)" }}
             >
-              What We Do
+              Capabilities & Solutions
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF7139]" />
           </div>
 
           <h1
-            className="services-hero-title opacity-0 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight mb-8"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            className="services-hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight text-[#111111] leading-[0.95] mb-6"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            <span style={{ color: "#F4F1EA" }}>THE RIGHT DIGITAL</span>
-            <br />
-            <span style={{ color: "#D7FF00" }}>SOLUTIONS FOR YOUR NEXT MOVE.</span>
+            SERVICES BUILT <br />
+            <span className="text-[#FF7139]">FOR COMMERCIAL GROWTH</span>.
           </h1>
 
           <p
-            className="services-hero-sub opacity-0 text-base md:text-lg max-w-xl leading-relaxed"
-            style={{ color: "#858585" }}
+            className="services-hero-sub text-base sm:text-lg md:text-xl text-[#777777] max-w-2xl leading-relaxed mb-10"
+            style={{ fontFamily: "var(--font-body)" }}
           >
-            From your first website to your next digital transformation, we help
-            turn ambitious ideas into effective, scalable online experiences.
+            From your first flagship website to comprehensive e-commerce systems,
+            we turn ambitious ideas into effective, scalable digital experiences.
           </p>
 
-          <div className="mt-10 flex items-center gap-3">
-            <ArrowDown className="w-5 h-5 text-[#D7FF00] animate-bounce" />
-            <span
-              className="text-xs tracking-widest uppercase"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-              }}
-            >
-              Explore our services
-            </span>
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#777777] font-semibold">
+            <ArrowDown className="w-4 h-4 text-[#FF7139] animate-bounce" />
+            <span>Explore our 5 core capabilities</span>
           </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section
-        ref={servicesRef}
-        className="py-24 md:py-32"
-        style={{ background: "#090909" }}
-      >
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="space-y-8">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                id={service.id}
-                className="service-card opacity-0 border group"
-                style={{ borderColor: "rgba(244,241,234,0.08)" }}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-                  {/* Number */}
-                  <div
-                    className="lg:col-span-2 p-8 flex items-start border-b lg:border-b-0 lg:border-r"
-                    style={{ borderColor: "rgba(244,241,234,0.08)" }}
-                  >
-                    <span
-                      className="text-7xl md:text-8xl font-bold leading-none opacity-20"
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: service.color,
-                      }}
-                    >
-                      {service.number}
+      {/* Services List */}
+      <section ref={servicesRef} className="px-6 md:px-10 lg:px-16 mb-20 md:mb-32">
+        <div className="max-w-[1440px] mx-auto space-y-12">
+          {services.map((service) => (
+            <div
+              key={service.id}
+              id={service.id}
+              className="service-card rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white p-8 sm:p-12 md:p-14 shadow-sm transition-all duration-300 hover:border-[#111111] hover:shadow-md"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+                {/* Left: Number and Title */}
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#FF7139] block mb-2">
+                      SERVICE {service.number}
                     </span>
-                  </div>
-
-                  {/* Content */}
-                  <div className="lg:col-span-10 p-8 md:p-12">
-                    <div
-                      className="text-xs tracking-widest uppercase mb-3"
-                      style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
-                        color: "#858585",
-                      }}
-                    >
-                      {service.tagline}
-                    </div>
-
                     <h2
-                      className="text-3xl md:text-4xl font-bold mb-6 tracking-tight"
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: "#F4F1EA",
-                      }}
+                      className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#111111] leading-[1.0] mb-3"
+                      style={{ fontFamily: "var(--font-display)" }}
                     >
                       {service.title}
                     </h2>
-
                     <p
-                      className="text-base max-w-2xl mb-8 leading-relaxed"
-                      style={{ color: "#858585" }}
+                      className="text-xs font-semibold uppercase tracking-wider text-[#777777]"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      {service.tagline}
+                    </p>
+                  </div>
+
+                  {/* Labels */}
+                  <div className="flex flex-wrap gap-2 pt-4">
+                    {service.labels.map((lbl) => (
+                      <span
+                        key={lbl}
+                        className="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[#F5F5F2] border border-[#DDDDDA] text-[#777777]"
+                      >
+                        {lbl}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div>
+                    <Link
+                      href="/contact"
+                      className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-[#111111] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#FF7139] transition-colors"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      <span>Discuss This Service</span>
+                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Right: Description & Deliverables */}
+                <div className="lg:col-span-7 space-y-8 lg:border-l lg:border-[#DDDDDA] lg:pl-10">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#777777] block mb-3">
+                      OVERVIEW & VALUE
+                    </span>
+                    <p
+                      className="text-base text-[#777777] leading-relaxed"
+                      style={{ fontFamily: "var(--font-body)" }}
                     >
                       {service.description}
                     </p>
+                  </div>
 
-                    {/* Features */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-                      {service.features.map((feature) => (
-                        <div
-                          key={feature}
-                          className="flex items-center gap-3"
-                        >
-                          <div
-                            className="w-1.5 h-1.5 rounded-full"
-                            style={{ background: service.color }}
-                          />
-                          <span
-                            className="text-sm"
-                            style={{ color: "#F4F1EA" }}
-                          >
-                            {feature}
-                          </span>
+                  {/* Core Features */}
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#777777] block mb-3">
+                      CORE ARCHITECTURE
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {service.features.map((feat) => (
+                        <div key={feat} className="flex items-center gap-2 text-xs font-medium text-[#111111]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#FF7139]" />
+                          <span>{feat}</span>
                         </div>
                       ))}
                     </div>
+                  </div>
 
-                    {/* Deliverables */}
-                    <div className="mb-8">
-                      <h3
-                        className="text-xs tracking-widest uppercase mb-4"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          color: "#D7FF00",
-                        }}
-                      >
-                        Key Deliverables
-                      </h3>
-                      <ul className="space-y-2">
-                        {service.deliverables.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-3 text-sm"
-                            style={{ color: "#858585" }}
-                          >
-                            <CheckCircle2
-                              className="w-4 h-4 flex-shrink-0 mt-0.5"
-                              style={{ color: service.color }}
-                            />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Labels + CTA */}
-                    <div className="flex flex-wrap items-center gap-3">
-                      {service.labels.map((label) => (
-                        <span
-                          key={label}
-                          className="px-3 py-1 text-xs tracking-widest uppercase border"
-                          style={{
-                            fontFamily: "'IBM Plex Mono', monospace",
-                            color: service.color,
-                            borderColor:
-                              service.color === "#D7FF00"
-                                ? "rgba(215,255,0,0.3)"
-                                : "rgba(255,79,154,0.3)",
-                          }}
-                        >
-                          {label}
-                        </span>
+                  {/* Key Deliverables */}
+                  <div className="p-6 rounded-2xl bg-[#F5F5F2] border border-[#DDDDDA]">
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#FF7139] block mb-3">
+                      KEY DELIVERABLES
+                    </span>
+                    <ul className="space-y-2.5">
+                      {service.deliverables.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-xs text-[#111111]">
+                          <CheckCircle2 className="w-4 h-4 text-[#FF7139] flex-shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
                       ))}
-                      <Link
-                        href="/contact"
-                        className="group ml-auto inline-flex items-center gap-2 px-5 py-2 text-xs tracking-widest uppercase font-semibold transition-all duration-300"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          background: "#D7FF00",
-                          color: "#090909",
-                        }}
-                      >
-                        Discuss This Service
-                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </Link>
-                    </div>
+                    </ul>
                   </div>
                 </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Process 4-Step Summary */}
+      <section className="px-6 md:px-10 lg:px-16 mb-20 md:mb-32">
+        <div className="max-w-[1440px] mx-auto p-8 sm:p-12 md:p-16 rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white">
+          <div className="border-b border-[#DDDDDA] pb-8 mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#FF7139] block mb-2">
+              HOW WE WORK
+            </span>
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#111111]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              OUR FOUR-STEP PROCESS
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {process_steps.map((st) => (
+              <div key={st.step} className="p-6 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] space-y-2">
+                <span className="text-2xl font-bold text-[#FF7139]" style={{ fontFamily: "var(--font-display)" }}>
+                  {st.step}
+                </span>
+                <h3 className="text-lg font-bold uppercase text-[#111111]" style={{ fontFamily: "var(--font-display)" }}>
+                  {st.title}
+                </h3>
+                <p className="text-xs text-[#777777] leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  {st.description}
+                </p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Process */}
-          <div className="mt-32">
-            <div className="mb-16">
-              <div
-                className="text-xs tracking-widest uppercase mb-4"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  color: "#858585",
-                }}
-              >
-                How We Work
-              </div>
-              <h2
-                className="text-4xl md:text-5xl font-bold tracking-tight"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  color: "#F4F1EA",
-                }}
-              >
-                OUR PROCESS
-              </h2>
-            </div>
-
-            <div className="space-y-0">
-              {process_steps.map((step) => (
-                <div
-                  key={step.step}
-                  className="process-step opacity-0 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 py-8 border-b"
-                  style={{ borderColor: "rgba(244,241,234,0.08)" }}
-                >
-                  <span
-                    className="text-4xl font-bold opacity-20"
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      color: "#D7FF00",
-                    }}
-                  >
-                    {step.step}
-                  </span>
-                  <div>
-                    <h3
-                      className="text-xl font-bold mb-2 tracking-tight"
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: "#F4F1EA",
-                      }}
-                    >
-                      {step.title}
-                    </h3>
-                    <p className="text-sm max-w-md" style={{ color: "#858585" }}>
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-24 text-center">
-            <h3
-              className="text-3xl md:text-4xl font-bold mb-6 tracking-tight"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: "#F4F1EA",
-              }}
+      {/* Pricing Teaser Link */}
+      <section className="px-6 md:px-10 lg:px-16">
+        <div className="max-w-[1440px] mx-auto p-8 sm:p-12 md:p-16 rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div>
+            <h2
+              className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-[#111111] mb-2"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              READY TO START?
-            </h3>
-            <p className="text-base mb-8 max-w-md mx-auto" style={{ color: "#858585" }}>
-              Tell us about your project and we&apos;ll get back to you within
-              24 hours.
+              WANT TO EXPLORE PROJECT PACKAGES?
+            </h2>
+            <p className="text-sm text-[#777777]" style={{ fontFamily: "var(--font-body)" }}>
+              Review transparent investment scopes and package deliverables.
             </p>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                background: "#D7FF00",
-                color: "#090909",
-              }}
-            >
-              Start a Project
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
           </div>
+
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-2.5 px-8 py-4.5 rounded-full bg-[#111111] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#FF7139] transition-colors"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            <span>View Packages & Pricing</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
     </div>

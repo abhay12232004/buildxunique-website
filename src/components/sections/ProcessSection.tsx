@@ -1,66 +1,105 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
+import { ArrowUpRight, Search, Palette, Code2, Rocket, Check } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   {
-    step: "01",
-    name: "DISCOVER",
+    number: "01",
+    icon: Search,
+    phase: "DISCOVER & STRATEGIZE",
+    timeline: "Week 01",
+    tagline: "Uncovering Commercial Intent",
     description:
-      "We immerse ourselves in your brand DNA, business model, audience pain points, and strategic commercial goals.",
+      "We dissect your target audience, commercial goals, competitors, and technical requirements. We establish the typographic direction, information architecture, and core funnel metrics.",
+    deliverables: [
+      "Brand & audience positioning alignment",
+      "Sitemap & information architecture",
+      "Moodboards & creative direction deck",
+      "Technical architecture specification",
+    ],
   },
   {
-    step: "02",
-    name: "STRATEGIZE",
+    number: "02",
+    icon: Palette,
+    phase: "DESIGN & PROTOTYPE",
+    timeline: "Weeks 02–03",
+    tagline: "Translating Brand Into Visual Form",
     description:
-      "We map the site architecture, user journeys, interaction blueprints, copy hierarchy, and milestone timeline.",
+      "We craft high-fidelity desktop and mobile viewports in Figma. We define the design tokens, spatial rhythm, custom iconography, and interactive prototypes for full client review.",
+    deliverables: [
+      "High-fidelity responsive Figma UI layouts",
+      "Interactive clickable prototypes",
+      "Complete design system & token variables",
+      "Async Loom video walkthrough for feedback",
+    ],
   },
   {
-    step: "03",
-    name: "DESIGN",
+    number: "03",
+    icon: Code2,
+    phase: "DEVELOP & CHOREOGRAPH",
+    timeline: "Weeks 03–05",
+    tagline: "Native React 19 & Next.js 16 Engineering",
     description:
-      "We produce high-fidelity editorial layouts, design tokens, responsive states, and signature micro-interactions.",
+      "We convert approved designs into clean, modular code. We implement fluid GSAP animations, optimize asset pipelines, and wire up database, CMS, or payment gateways.",
+    deliverables: [
+      "Custom Next.js App Router codebase",
+      "Choreographed GSAP scroll animations",
+      "Private live staging URL on Vercel",
+      "Zero-latency API & gateway integrations",
+    ],
   },
   {
-    step: "04",
-    name: "DEVELOP",
+    number: "04",
+    icon: Rocket,
+    phase: "QA, BENCHMARK & LAUNCH",
+    timeline: "Week 05–06",
+    tagline: "Precision Deployment to Production",
     description:
-      "We build in modern Next.js and TypeScript, weaving fluid GSAP animations with accessible, performant code.",
-  },
-  {
-    step: "05",
-    name: "LAUNCH",
-    description:
-      "Rigorous cross-device QA, Core Web Vitals optimization, domain configuration, and launch support.",
+      "We conduct cross-browser and mobile device audits, verify WCAG accessibility, stress-test Lighthouse scores, point your custom domain, and hand over complete source code.",
+    deliverables: [
+      "100/100 Lighthouse performance validation",
+      "DNS configuration & SSL deployment",
+      "PostHog / Google Analytics instrumentation",
+      "30-day post-launch warranty & handover docs",
+    ],
   },
 ];
 
 export function ProcessSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      gsap.fromTo(
-        ".process-step",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.utils.toArray<HTMLElement>(".process-step-card").forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
     },
     { scope: containerRef }
   );
@@ -68,104 +107,124 @@ export function ProcessSection() {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-36 border-t overflow-hidden"
-      style={{
-        background: "#090909",
-        borderColor: "rgba(244, 241, 234, 0.08)",
-      }}
+      aria-label="Studio 4-Step Process & Execution Methodology"
+      className="relative py-24 sm:py-32 md:py-40 px-4 sm:px-6 md:px-10 lg:px-16 bg-[#F5F5F2] border-t border-[#DDDDDA]/70"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        {/* Section Heading */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="max-w-[1440px] mx-auto">
+        {/* SECTION HEADER HUD */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
-            <span
-              className="text-xs tracking-widest uppercase mb-4 inline-block"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-              }}
-            >
-              Our Process
-            </span>
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
+              <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
+              <span>006 // SYSTEMATIC METHODOLOGY</span>
+            </div>
             <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-none"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: "#F4F1EA",
-              }}
+              className="text-[clamp(2.5rem,6vw,5.5rem)] font-normal text-[#111111] uppercase leading-[0.95] tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              FROM FIRST IDEA <br />
-              <span style={{ color: "#D7FF00" }}>TO FINAL LAUNCH.</span>
+              4-STEP PROCESS.
             </h2>
           </div>
+
           <p
-            className="text-sm md:text-base max-w-sm leading-relaxed"
-            style={{ color: "#858585" }}
+            className="max-w-md text-sm sm:text-base text-[#777777] leading-relaxed"
+            style={{ fontFamily: "var(--font-body)" }}
           >
-            A clear process. Thoughtful execution. Zero unnecessary complexity.
-            Here is how your vision becomes reality.
+            A disciplined, transparent delivery framework engineered to eliminate guesswork, respect turnaround deadlines, and produce award-worthy results.
           </p>
         </div>
 
-        {/* Timeline Container: Desktop Horizontal Grid / Mobile Vertical Stack */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
-          {/* Subtle connecting line behind steps on desktop */}
-          <div
-            className="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-[1px] pointer-events-none z-0"
-            style={{ background: "rgba(244, 241, 234, 0.1)" }}
-          />
+        {/* 4-STEP PIPELINE CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.number}
+                data-cursor="STEP"
+                className="process-step-card group relative p-8 rounded-2xl border border-[#DDDDDA] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#111111] hover:shadow-[0_12px_40px_rgba(17,17,17,0.06)]"
+              >
+                <div>
+                  {/* Top Step Meta */}
+                  <div className="flex items-center justify-between pb-6 border-b border-[#DDDDDA]/60">
+                    <span
+                      className="text-3xl font-bold text-[#FF7139]"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {step.number}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full border border-[#DDDDDA] bg-[#F5F5F2] text-[10px] font-mono text-[#111111] uppercase">
+                      {step.timeline}
+                    </span>
+                  </div>
 
-          {steps.map((item) => (
-            <div
-              key={item.step}
-              className="process-step opacity-0 relative z-10 flex flex-col border p-6 md:p-6"
-              style={{
-                background: "#0d0d0d",
-                borderColor: "rgba(244, 241, 234, 0.08)",
-              }}
-            >
-              {/* Step indicator node */}
-              <div className="flex items-center justify-between mb-8">
-                <span
-                  className="w-10 h-10 border flex items-center justify-center font-bold text-xs"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    borderColor: "#D7FF00",
-                    color: "#D7FF00",
-                    background: "rgba(215, 255, 0, 0.05)",
-                  }}
-                >
-                  {item.step}
-                </span>
-                <span
-                  className="text-[10px] tracking-widest uppercase"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    color: "#858585",
-                  }}
-                >
-                  PHASE
-                </span>
+                  {/* Icon & Phase */}
+                  <div className="mt-6">
+                    <div className="p-2.5 w-fit rounded-xl bg-[#F5F5F2] group-hover:bg-[#FF7139] group-hover:text-white transition-colors duration-200 mb-3">
+                      <Icon className="w-5 h-5 text-[#111111] group-hover:text-white transition-colors duration-200" />
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#FF7139] font-bold block mb-1">
+                      {step.tagline}
+                    </span>
+                    <h3
+                      className="text-xl font-bold text-[#111111] uppercase tracking-tight mb-3"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {step.phase}
+                    </h3>
+                    <p
+                      className="text-sm text-[#777777] leading-relaxed mb-6"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Deliverables Checklist */}
+                <div className="mt-4 pt-4 border-t border-[#DDDDDA]/50">
+                  <span className="text-[10px] font-mono uppercase text-[#777777] font-semibold block mb-2.5">
+                    KEY MILESTONES:
+                  </span>
+                  <ul className="space-y-2">
+                    {step.deliverables.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-xs text-[#111111]">
+                        <span className="w-3.5 h-3.5 rounded-full bg-[#F5F5F2] border border-[#DDDDDA] flex items-center justify-center shrink-0 mt-0.5 text-[#FF7139]">
+                          <Check className="w-2 h-2" />
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
+            );
+          })}
+        </div>
 
-              <h3
-                className="text-xl font-bold tracking-tight mb-3"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  color: "#F4F1EA",
-                }}
-              >
-                {item.name}
-              </h3>
-
-              <p
-                className="text-xs md:text-sm leading-relaxed"
-                style={{ color: "#858585" }}
-              >
-                {item.description}
-              </p>
-            </div>
-          ))}
+        {/* BOTTOM INITIATE CALLOUT */}
+        <div className="mt-16 p-8 rounded-2xl border border-[#DDDDDA] bg-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
+          <div>
+            <h4
+              className="text-xl sm:text-2xl font-bold text-[#111111] uppercase tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              READY TO COMMENCE STEP 01?
+            </h4>
+            <p className="text-xs sm:text-sm text-[#777777] mt-1 font-mono">
+              We onboard only 2 new projects per month to maintain uncompromised craft.
+            </p>
+          </div>
+          <MagneticButton strength={0.25}>
+            <Link
+              href="/contact"
+              data-cursor="DISCUSS"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#111111] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#FF7139] transition-colors"
+            >
+              <span>Schedule Discovery Call</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </MagneticButton>
         </div>
       </div>
     </section>

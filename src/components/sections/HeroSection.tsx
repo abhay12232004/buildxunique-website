@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, ArrowDown } from "lucide-react";
+import { ArrowUpRight, ArrowDown, Activity, Sparkles, Zap } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const services = [
   "WEBSITES.",
@@ -20,6 +21,26 @@ export function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const loopTlRef = useRef<gsap.core.Timeline | null>(null);
+  const [timeString, setTimeString] = useState<string>("");
+
+  /* Live IST Studio Clock */
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTimeString(
+        now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }) + " IST"
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useGSAP(
     () => {
@@ -33,21 +54,33 @@ export function HeroSection() {
 
         introTl
           .fromTo(
+            ".hero-hud-bar",
+            { opacity: 0, y: -15 },
+            { opacity: 1, y: 0, duration: 0.6 }
+          )
+          .fromTo(
             ".hero-eyebrow",
             { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: 0.6 }
+            { opacity: 1, y: 0, duration: 0.6 },
+            "-=0.3"
           )
           .fromTo(
             ".hero-headline-row",
             { opacity: 0, y: 35 },
-            { opacity: 1, y: 0, duration: 0.75, stagger: 0.12 },
-            "-=0.3"
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 },
+            "-=0.35"
           )
           .fromTo(
             ".hero-sub",
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.6 },
             "-=0.35"
+          )
+          .fromTo(
+            ".hero-metrics-pill",
+            { opacity: 0, scale: 0.95 },
+            { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1 },
+            "-=0.3"
           )
           .fromTo(
             ".hero-ctas",
@@ -65,7 +98,6 @@ export function HeroSection() {
 
       /* Dynamic Services Vertical Roller */
       if (prefersReduced) {
-        // Fallback: simply show first word statically
         if (wordRefs.current[0]) {
           gsap.set(wordRefs.current[0], { yPercent: 0, opacity: 1, visibility: "visible" });
         }
@@ -86,7 +118,7 @@ export function HeroSection() {
       const loopTl = gsap.timeline({ repeat: -1 });
       loopTlRef.current = loopTl;
 
-      const displayDuration = 2.4; // Time to hold and read
+      const displayDuration = 2.4; // Time to hold
       const transitionDuration = 0.65; // Slide speed
 
       services.forEach((_, i) => {
@@ -96,51 +128,47 @@ export function HeroSection() {
 
         if (!currentWord || !nextWord) return;
 
-        // Hold current word
         loopTl.to({}, { duration: displayDuration });
 
-        // Step label for synchronizing exit & entrance
-        const stepLabel = `step-${i}`;
+        loopTl.call(() => {
+          gsap.set(nextWord, { yPercent: 100, opacity: 0, visibility: "visible" });
+        });
 
-        // Current word exits upward
-        loopTl.to(
-          currentWord,
-          {
-            yPercent: -100,
-            opacity: 0,
-            duration: transitionDuration,
-            ease: "power3.inOut",
-            onComplete: () => {
-              gsap.set(currentWord, { visibility: "hidden" });
+        loopTl
+          .to(
+            currentWord,
+            {
+              yPercent: -100,
+              opacity: 0,
+              duration: transitionDuration,
+              ease: "power2.inOut",
             },
-          },
-          stepLabel
-        );
+            `slide-${i}`
+          )
+          .to(
+            nextWord,
+            {
+              yPercent: 0,
+              opacity: 1,
+              duration: transitionDuration,
+              ease: "power2.inOut",
+            },
+            `slide-${i}`
+          );
 
-        // Next word enters from below
-        loopTl.set(nextWord, { yPercent: 100, opacity: 0, visibility: "visible" }, stepLabel);
-        loopTl.to(
-          nextWord,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: transitionDuration,
-            ease: "power3.inOut",
-          },
-          stepLabel
-        );
+        loopTl.call(() => {
+          gsap.set(currentWord, { visibility: "hidden" });
+        });
       });
 
-      // Pause when page is not visible
+      /* Handle Visibility Change to prevent GSAP desync */
       const handleVisibilityChange = () => {
-        if (!loopTlRef.current) return;
         if (document.hidden) {
-          loopTlRef.current.pause();
+          loopTl.pause();
         } else {
-          loopTlRef.current.resume();
+          loopTl.resume();
         }
       };
-
       document.addEventListener("visibilitychange", handleVisibilityChange);
 
       return () => {
@@ -154,135 +182,159 @@ export function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[#F5F5F2] pt-32 sm:pt-36 md:pt-44 pb-20 sm:pb-24 px-6 md:px-10 lg:px-16"
+      aria-label="Hero Section"
+      className="relative min-h-screen flex flex-col items-center justify-between pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-12 md:pb-16 px-4 sm:px-6 md:px-10 lg:px-16 overflow-hidden bg-[#F5F5F2]"
     >
-      {/* Warm Ambient Atmosphere */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 65% 50% at 50% 32%, rgba(255, 113, 57, 0.05) 0%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
+      {/* Architectural Corner Crosshair Accents */}
+      <div className="absolute top-24 left-6 hidden xl:block text-[#DDDDDA] font-mono text-xs select-none" aria-hidden="true">
+        + 001 // HERO
+      </div>
+      <div className="absolute top-24 right-6 hidden xl:block text-[#DDDDDA] font-mono text-xs select-none" aria-hidden="true">
+        GRID // 1440PX +
+      </div>
 
-      {/* Subtle Architectural Grid Lines */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#111111 1px, transparent 1px), linear-gradient(90deg, #111111 1px, transparent 1px)",
-          backgroundSize: "96px 96px",
-        }}
-        aria-hidden="true"
-      />
+      {/* TOP STUDIO HUD STATUS BAR */}
+      <div className="hero-hud-bar w-full max-w-[1440px] flex items-center justify-between py-2 border-b border-[#DDDDDA]/60 mb-6 text-[11px] sm:text-xs font-mono text-[#777777] uppercase tracking-wider">
+        <div className="flex items-center gap-2">
+          <Activity className="w-3 h-3 text-[#FF7139] animate-pulse" />
+          <span>INDEPENDENT DIGITAL STUDIO</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-6">
+          <span>ARCH: NEXT.JS 16 // GSAP</span>
+          <span>{timeString || "DELHI, INDIA"}</span>
+        </div>
+        <div className="flex items-center gap-2 text-[#111111] font-semibold">
+          <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
+          <span>STUDIO OPERATIONAL</span>
+        </div>
+      </div>
 
-      <div className="relative z-10 max-w-[1440px] mx-auto w-full flex flex-col items-center text-center">
+      {/* MAIN CENTERED HERO CONTENT */}
+      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center my-auto px-2">
         {/* Eyebrow Label */}
         <div className="hero-eyebrow mb-6 sm:mb-8">
           <span
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#DDDDDA] bg-white/70 backdrop-blur-xs text-[11px] sm:text-xs tracking-[0.16em] uppercase font-semibold text-[#777777]"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full border border-[#DDDDDA] bg-white/70 backdrop-blur-xs text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-[#111111]"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF7139]" aria-hidden="true" />
-            Independent Design & Development Studio
+            <Sparkles className="w-3 h-3 text-[#FF7139]" />
+            <span>Digital Design & Creative Engineering</span>
           </span>
         </div>
 
-        {/* Grand Centered Headline (DOVV Studio Composition) */}
-        <h1
-          className="w-full flex flex-col items-center justify-center font-bold tracking-tight select-none leading-[0.92] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[7.75rem] xl:text-[8.5rem]"
+        {/* 3-LINE CENTERED OVERSIZED HEADLINE */}
+        <div
+          className="w-full text-center tracking-tight leading-[1] select-none text-[clamp(2rem,7vw,7rem)] font-normal uppercase"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          {/* Line 1: Fixed */}
-          <span className="hero-headline-row block text-[#111111] uppercase tracking-[-0.01em]">
-            WE BUILD
-          </span>
+          {/* LINE 1 */}
+          <div className="hero-headline-row overflow-hidden pb-1">
+            <h1 className="text-[#111111] tracking-normal whitespace-nowrap leading-[1]">
+              WE BUILD
+            </h1>
+          </div>
 
-          {/* Line 2: Dynamic Rotating Service in Orange */}
-          <span className="hero-headline-row relative block w-full h-[1.05em] overflow-hidden">
+          {/* LINE 2 — DYNAMIC ROTATING SERVICE (ORANGE) */}
+          <div className="hero-headline-row relative h-[1.25em] overflow-hidden my-1 sm:my-2 flex items-center justify-center">
             {services.map((service, index) => (
               <span
                 key={service}
                 ref={(el) => {
                   wordRefs.current[index] = el;
                 }}
-                className="absolute inset-0 flex items-center justify-center text-[#FF7139] uppercase tracking-[-0.01em] whitespace-nowrap"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  visibility: index === 0 ? "visible" : "hidden",
-                }}
+                className="absolute inset-0 flex items-center justify-center text-[#FF7139] tracking-normal whitespace-nowrap leading-[1] will-change-transform drop-shadow-[0_4px_24px_rgba(255,113,57,0.18)]"
+                aria-hidden={index !== 0}
               >
                 {service}
               </span>
             ))}
-          </span>
+          </div>
 
-          {/* Line 3: Fixed */}
-          <span className="hero-headline-row block text-[#111111] uppercase tracking-[-0.01em]">
-            THAT MOVE PEOPLE.
-          </span>
-        </h1>
+          {/* LINE 3 */}
+          <div className="hero-headline-row overflow-hidden pt-1">
+            <h2 className="text-[#111111] tracking-normal whitespace-nowrap leading-[1]">
+              THAT MOVE PEOPLE.
+            </h2>
+          </div>
+        </div>
 
-        {/* Supporting Copy */}
+        {/* SUPPORTING MANIFESTO SUBTITLE */}
         <p
-          className="hero-sub text-center mx-auto mt-8 sm:mt-10 md:mt-12 max-w-2xl text-base sm:text-lg md:text-xl text-[#777777] font-normal leading-relaxed px-4"
+          className="hero-sub mt-8 sm:mt-10 max-w-2xl text-center text-sm sm:text-base md:text-lg text-[#777777] font-normal leading-relaxed"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          We design and develop digital experiences that help ambitious brands stand
-          out, connect and grow.
+          From bold concept architectures to high-converting commercial platforms. We partner with ambitious brands to build unmistakable, performance-driven web products.
         </p>
 
-        {/* Interactive CTA Buttons */}
-        <div className="hero-ctas mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
-          {/* PRIMARY CTA: START A PROJECT */}
-          <Link
-            href="/contact"
-            className="group inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-9 sm:py-4.5 rounded-full bg-[#111111] text-[#FFFFFF] text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-[#FF7139] hover:shadow-[0_8px_24px_rgba(255,113,57,0.25)] hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#FF7139] focus-visible:outline-offset-3"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            <span>START A PROJECT</span>
-            <ArrowUpRight
-              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
-              aria-hidden="true"
-            />
-          </Link>
-
-          {/* SECONDARY CTA: EXPLORE OUR WORK */}
-          <button
-            type="button"
-            onClick={() => {
-              const target =
-                document.getElementById("work") ||
-                document.getElementById("portfolio") ||
-                document.querySelector("section:nth-of-type(2)");
-              if (target) {
-                target.scrollIntoView({ behavior: "smooth" });
-              } else {
-                router.push("/work");
-              }
-            }}
-            className="group inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-9 sm:py-4.5 rounded-full border border-[#DDDDDA] bg-transparent text-[#111111] text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:border-[#111111] hover:bg-white hover:shadow-xs hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#FF7139] focus-visible:outline-offset-3 cursor-pointer"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            <span>EXPLORE OUR WORK</span>
-            <ArrowDown
-              className="w-4 h-4 text-[#777777] transition-all duration-200 group-hover:translate-y-1 group-hover:text-[#111111]"
-              aria-hidden="true"
-            />
-          </button>
+        {/* KINETIC METRIC PILLS */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
+          <div className="hero-metrics-pill px-3 py-1 rounded-full border border-[#DDDDDA] bg-white/80 text-[11px] font-mono uppercase text-[#111111] flex items-center gap-1.5">
+            <Zap className="w-3 h-3 text-[#FF7139]" />
+            <span>0% Generic Templates</span>
+          </div>
+          <div className="hero-metrics-pill px-3 py-1 rounded-full border border-[#DDDDDA] bg-white/80 text-[11px] font-mono uppercase text-[#111111] flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F4CE36]" />
+            <span>Sub-Second Page Loads</span>
+          </div>
+          <div className="hero-metrics-pill px-3 py-1 rounded-full border border-[#DDDDDA] bg-white/80 text-[11px] font-mono uppercase text-[#111111] flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
+            <span>100% Bespoke Code</span>
+          </div>
         </div>
 
-        {/* Scroll Indicator Prompt */}
-        <div className="hero-scroll mt-16 sm:mt-20 md:mt-24 flex flex-col items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-          <span
-            className="text-[11px] uppercase tracking-[0.2em] text-[#777777] font-semibold"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Scroll to pull
-          </span>
-          <ArrowDown className="w-3.5 h-3.5 text-[#FF7139] animate-bounce" />
+        {/* CALL TO ACTION BUTTONS WITH MAGNETIC HOVER */}
+        <div className="hero-ctas flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 sm:mt-10 w-full sm:w-auto">
+          <MagneticButton strength={0.25} className="w-full sm:w-auto">
+            <Link
+              href="/contact"
+              data-cursor="START"
+              className="group relative inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 py-4 rounded-full bg-[#111111] text-[#FFFFFF] text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-[#FF7139] hover:shadow-[0_8px_28px_rgba(255,113,57,0.32)] focus-visible:outline-2 focus-visible:outline-[#FF7139] focus-visible:outline-offset-3"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              <span>Start a Project</span>
+              <ArrowUpRight
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                aria-hidden="true"
+              />
+            </Link>
+          </MagneticButton>
+
+          <MagneticButton strength={0.25} className="w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={() => router.push("/work")}
+              data-cursor="WORK"
+              className="group relative inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 py-4 rounded-full bg-white text-[#111111] border border-[#DDDDDA] text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:border-[#111111] hover:bg-[#111111] hover:text-[#FFFFFF] focus-visible:outline-2 focus-visible:outline-[#111111] focus-visible:outline-offset-3"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              <span>Explore Selected Work</span>
+              <ArrowDown
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                aria-hidden="true"
+              />
+            </button>
+          </MagneticButton>
         </div>
+      </div>
+
+      {/* BOTTOM SCROLL INDICATOR */}
+      <div className="hero-scroll w-full flex flex-col items-center justify-center pt-8 sm:pt-10">
+        <button
+          type="button"
+          onClick={() => {
+            const nextSec = document.getElementById("manifesto-section");
+            if (nextSec) {
+              nextSec.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+          className="group inline-flex flex-col items-center gap-2 text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#777777] hover:text-[#111111] transition-colors focus-visible:outline-2 focus-visible:outline-[#FF7139] rounded-xs"
+          aria-label="Scroll down to studio manifesto"
+        >
+          <div className="w-5 h-9 rounded-full border border-[#DDDDDA] flex items-start justify-center p-1 group-hover:border-[#111111] transition-colors">
+            <span className="w-1 h-2 rounded-full bg-[#FF7139] animate-bounce" />
+          </div>
+          <span>SCROLL TO EXPLORE</span>
+        </button>
       </div>
     </section>
   );

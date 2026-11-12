@@ -6,62 +6,63 @@ import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const categories = ["All", "Websites", "E-commerce", "Landing Pages", "UI/UX"];
+const categories = ["ALL", "E-COMMERCE", "WEBSITES", "LANDING PAGES", "UI/UX"];
 
 const projects = [
   {
     id: "nova",
     number: "01",
     title: "NOVA",
-    category: "E-commerce",
-    categoryLabel: "E-commerce Website",
+    category: "E-COMMERCE",
+    categoryLabel: "High-End Contemporary Apparel Storefront",
     description:
-      "A modern digital storefront designed to make product discovery effortless. Clean layouts, intuitive navigation, and optimised for conversion with high average order value in mind.",
-    scope: ["UI/UX Design", "Frontend Development", "E-Commerce"],
-    color: "#D7FF00",
-    bg: "#0d1a00",
+      "A modern digital storefront engineered for effortless product discovery, sub-second page transitions, and an optimized mobile checkout funnel.",
+    scope: ["Custom Architecture", "Shopify Headless", "Design System"],
+    accent: "#FF7139",
+    bgPattern: "from-[#FF7139]/10 via-[#F5F5F2] to-white",
     concept: true,
   },
   {
     id: "forma",
     number: "02",
     title: "FORMA",
-    category: "Websites",
-    categoryLabel: "Architecture & Interior Website",
+    category: "WEBSITES",
+    categoryLabel: "Spatial Design & Interior Architecture Studio",
     description:
-      "A refined digital presence that showcases spaces through strong visuals and thoughtful storytelling. Designed to highlight craftsmanship and detail with immersive editorial layouts.",
-    scope: ["Brand Identity", "Web Design", "Development"],
-    color: "#F4F1EA",
-    bg: "#1a1710",
+      "An editorial digital monograph showcasing spatial craftsmanship through strong imagery, horizontal scroll choreographies, and refined typographic rhythm.",
+    scope: ["Editorial UI", "Creative Development", "Interactive Gallery"],
+    accent: "#111111",
+    bgPattern: "from-[#111111]/5 via-[#F5F5F2] to-white",
     concept: true,
   },
   {
     id: "vanta",
     number: "03",
     title: "VANTA",
-    category: "Landing Pages",
-    categoryLabel: "SaaS / Technology Website",
+    category: "LANDING PAGES",
+    categoryLabel: "Developer-First Cloud Deployment Platform",
     description:
-      "A modern web experience that makes complex technology easier to understand. Feature-rich landing pages with interactive CLI sandboxes and a dark-mode conversion-focused aesthetic.",
-    scope: ["Landing Page", "SaaS", "Animation"],
-    color: "#FF4F9A",
-    bg: "#1a0010",
+      "A high-conversion marketing destination that demystifies distributed cloud infrastructure with interactive CLI sandboxes and dark-mode aesthetics.",
+    scope: ["Landing Page", "SaaS Conversion", "Motion Design"],
+    accent: "#FF7139",
+    bgPattern: "from-[#FF7139]/10 via-[#F5F5F2] to-white",
     concept: true,
   },
   {
     id: "pulse",
     number: "04",
     title: "PULSE",
-    category: "Websites",
-    categoryLabel: "Health & Wellness Platform",
+    category: "WEBSITES",
+    categoryLabel: "Health & Performance Wellness Platform",
     description:
-      "A calming, user-first platform for a health and wellness brand. Focus on accessibility, warmth, and trust-building design that communicates care and credibility.",
-    scope: ["UI/UX Design", "Web App", "Branding"],
-    color: "#D7FF00",
-    bg: "#001a0d",
+      "A calming, user-first web app for modern preventative health. Built with rigorous accessibility conformance and transparent, trust-building visual cues.",
+    scope: ["UI/UX Design", "Web App Architecture", "Branding"],
+    accent: "#F4CE36",
+    bgPattern: "from-[#F4CE36]/15 via-[#F5F5F2] to-white",
     concept: true,
   },
   {
@@ -69,23 +70,23 @@ const projects = [
     number: "05",
     title: "ATLAS",
     category: "UI/UX",
-    categoryLabel: "Travel & Experience Agency",
+    categoryLabel: "Bespoke Travel & Expedition Agency",
     description:
-      "An immersive travel website designed to inspire adventure. Full-screen visuals, smooth transitions, and a booking-optimised user journey crafted for high engagement.",
-    scope: ["Web Design", "Development", "CMS"],
-    color: "#FF4F9A",
-    bg: "#0d0a1a",
+      "An immersive digital portal designed to inspire exploration through full-bleed imagery, smooth page transitions, and booking-optimized user journeys.",
+    scope: ["Brand Identity", "Figma Design System", "Creative Dev"],
+    accent: "#111111",
+    bgPattern: "from-[#111111]/5 via-[#F5F5F2] to-white",
     concept: true,
   },
 ];
 
 export default function WorkPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("ALL");
   const heroRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   const filteredProjects =
-    activeCategory === "All"
+    activeCategory === "ALL"
       ? projects
       : projects.filter((p) => p.category === activeCategory);
 
@@ -97,117 +98,84 @@ export default function WorkPage() {
       if (prefersReduced) return;
 
       gsap.fromTo(
-        ".work-hero-label",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 }
-      );
-      gsap.fromTo(
         ".work-hero-title",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.9, delay: 0.2 }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
       );
       gsap.fromTo(
         ".work-hero-sub",
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.7, delay: 0.4 }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" }
       );
-    },
-    { scope: heroRef }
-  );
 
-  useGSAP(
-    () => {
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      if (prefersReduced) return;
-
-      gsap.utils.toArray<HTMLElement>(".work-project").forEach((card, i) => {
+      gsap.utils.toArray<HTMLElement>(".work-card").forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 60 },
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: "power3.out",
+            duration: 0.75,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: card,
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
-            delay: i * 0.1,
           }
         );
       });
     },
-    { scope: gridRef }
+    { dependencies: [activeCategory], scope: gridRef }
   );
 
   return (
-    <div>
+    <div className="pt-28 pb-24 md:pb-36 bg-[#F5F5F2] min-h-screen">
       {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative min-h-[60vh] flex flex-col justify-center overflow-hidden"
-        style={{ background: "#090909", paddingTop: "72px" }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 60% at 70% 40%, rgba(215,255,0,0.04) 0%, transparent 70%)",
-          }}
-        />
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-20 w-full">
-          <div className="work-hero-label opacity-0 mb-6">
+      <section ref={heroRef} className="px-6 md:px-10 lg:px-16 mb-16 md:mb-24">
+        <div className="max-w-[1440px] mx-auto border-b border-[#DDDDDA] pb-12 sm:pb-16">
+          <div className="flex items-center gap-2 mb-4">
             <span
-              className="inline-block text-xs tracking-widest uppercase border px-3 py-1.5"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-                borderColor: "rgba(133,133,133,0.3)",
-              }}
+              className="text-xs uppercase tracking-[0.16em] font-semibold text-[#777777]"
+              style={{ fontFamily: "var(--font-body)" }}
             >
-              Portfolio & Case Studies
+              Selected Portfolio
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF7139]" />
           </div>
 
           <h1
-            className="work-hero-title opacity-0 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight mb-8"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            className="work-hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight text-[#111111] leading-[0.95] mb-6"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            <span style={{ color: "#F4F1EA" }}>SELECTED WORK.</span>
-            <br />
-            <span style={{ color: "#D7FF00" }}>DISTINCTIVE EXPERIENCES.</span>
+            SELECTED WORK. <br />
+            <span className="text-[#FF7139]">DISTINCTIVE EXPERIENCES.</span>
           </h1>
 
           <p
-            className="work-hero-sub opacity-0 text-base md:text-lg max-w-xl leading-relaxed mb-12"
-            style={{ color: "#858585" }}
+            className="work-hero-sub text-base sm:text-lg md:text-xl text-[#777777] max-w-2xl leading-relaxed mb-10"
+            style={{ fontFamily: "var(--font-body)" }}
           >
             A curated showcase of concept studies and bespoke digital experiences
-            crafted to elevate brand perception and drive measurable results.
+            crafted to elevate brand perception and drive measurable commercial results.
           </p>
 
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-3">
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             {categories.map((cat) => {
               const isActive = activeCategory === cat;
               return (
                 <button
                   key={cat}
+                  type="button"
                   onClick={() => setActiveCategory(cat)}
-                  className="px-5 py-2.5 text-xs tracking-widest uppercase border transition-all duration-300"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    borderColor: isActive
-                      ? "#D7FF00"
-                      : "rgba(244, 241, 234, 0.15)",
-                    background: isActive ? "#D7FF00" : "transparent",
-                    color: isActive ? "#090909" : "#858585",
-                    fontWeight: isActive ? 600 : 400,
-                  }}
+                  className={cn(
+                    "px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer",
+                    isActive
+                      ? "bg-[#111111] text-white shadow-xs"
+                      : "bg-white border border-[#DDDDDA] text-[#777777] hover:border-[#111111] hover:text-[#111111]"
+                  )}
+                  style={{ fontFamily: "var(--font-body)" }}
                 >
                   {cat}
                 </button>
@@ -217,165 +185,131 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Projects */}
-      <section
-        ref={gridRef}
-        className="py-16 md:py-24"
-        style={{ background: "#090909" }}
-      >
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="space-y-12">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="work-project opacity-0 border group cursor-pointer overflow-hidden"
-                style={{ borderColor: "rgba(244,241,234,0.08)" }}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-                  {/* Visual */}
-                  <div
-                    className="lg:col-span-5 relative h-64 md:h-80 lg:h-auto overflow-hidden"
-                    style={{ background: project.bg }}
-                  >
-                    {project.concept && (
-                      <div
-                        className="absolute top-4 left-4 z-10 px-2.5 py-1 text-xs tracking-widest uppercase"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          background: "rgba(9,9,9,0.8)",
-                          color: "#858585",
-                          backdropFilter: "blur(4px)",
-                        }}
-                      >
-                        Concept
-                      </div>
-                    )}
-                    <div
-                      className="absolute inset-0 flex items-center justify-center text-[200px] font-bold leading-none select-none opacity-10 group-hover:scale-110 transition-transform duration-700"
+      {/* Projects Grid */}
+      <section ref={gridRef} className="px-6 md:px-10 lg:px-16 mb-20 md:mb-32">
+        <div className="max-w-[1440px] mx-auto space-y-12 sm:space-y-16">
+          {filteredProjects.map((project) => (
+            <div
+              key={project.id}
+              className="work-card group rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white overflow-hidden transition-all duration-300 hover:border-[#111111] hover:shadow-md"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                {/* Visual Canvas Column */}
+                <div
+                  className={cn(
+                    "lg:col-span-5 relative min-h-[280px] sm:min-h-[360px] p-8 flex flex-col justify-between overflow-hidden bg-gradient-to-br border-b lg:border-b-0 lg:border-r border-[#DDDDDA]",
+                    project.bgPattern
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-white/90 border border-[#DDDDDA] text-[#777777]"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      Concept Project
+                    </span>
+                    <span className="text-xs font-mono tracking-widest text-[#111111]">
+                      {project.number} / 05
+                    </span>
+                  </div>
+
+                  <div className="my-auto py-8 flex items-center justify-center">
+                    <span
+                      className="text-8xl sm:text-9xl md:text-[11rem] font-bold select-none leading-none opacity-20 transition-transform duration-700 ease-out group-hover:scale-105"
                       style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: project.color,
+                        fontFamily: "var(--font-display)",
+                        color: project.accent,
                       }}
                     >
                       {project.number}
-                    </div>
+                    </span>
                   </div>
 
-                  {/* Content */}
-                  <div
-                    className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l"
-                    style={{
-                      background: "#0f0f0f",
-                      borderColor: "rgba(244,241,234,0.08)",
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div
-                        className="text-xs tracking-widest uppercase"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          color: "#858585",
-                        }}
-                      >
-                        {project.categoryLabel}
-                      </div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.scope.map((tag) => (
                       <span
-                        className="text-xs tracking-widest uppercase"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          color: "#D7FF00",
-                        }}
+                        key={tag}
+                        className="px-2.5 py-1 rounded-sm text-[10px] uppercase font-mono tracking-wider bg-white/80 border border-[#DDDDDA] text-[#777777]"
                       >
-                        {project.number} / 05
+                        {tag}
                       </span>
-                    </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Details Column */}
+                <div className="lg:col-span-7 p-8 sm:p-12 md:p-14 flex flex-col justify-between space-y-6">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#FF7139] block mb-2">
+                      {project.category}
+                    </span>
 
                     <h2
-                      className="text-3xl md:text-4xl xl:text-5xl font-bold mb-4 tracking-tight"
-                      style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: "#F4F1EA",
-                      }}
+                      className="text-4xl sm:text-5xl font-bold uppercase tracking-tight text-[#111111] leading-[0.98] mb-2"
+                      style={{ fontFamily: "var(--font-display)" }}
                     >
                       {project.title}
                     </h2>
 
                     <p
-                      className="text-base max-w-lg mb-8 leading-relaxed"
-                      style={{ color: "#858585" }}
+                      className="text-xs font-semibold uppercase tracking-wider text-[#777777] mb-6"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      {project.categoryLabel}
+                    </p>
+
+                    <p
+                      className="text-base text-[#777777] leading-relaxed max-w-xl"
+                      style={{ fontFamily: "var(--font-body)" }}
                     >
                       {project.description}
                     </p>
+                  </div>
 
-                    {/* Scope tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.scope.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 text-xs tracking-widest uppercase border"
-                          style={{
-                            fontFamily: "'IBM Plex Mono', monospace",
-                            color: project.color,
-                            borderColor:
-                              project.color === "#D7FF00"
-                                ? "rgba(215,255,0,0.3)"
-                                : project.color === "#FF4F9A"
-                                ? "rgba(255,79,154,0.3)"
-                                : "rgba(244,241,234,0.2)",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="pt-6 border-t border-[#DDDDDA] flex items-center justify-between">
+                    <Link
+                      href="/contact"
+                      className="group/link inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-[#111111] hover:text-[#FF7139] transition-colors"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      <span>Commission Similar Work</span>
+                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
+                    </Link>
 
-                    <div>
-                      <span
-                        className="inline-flex items-center gap-2 text-xs tracking-widest uppercase group-hover:text-[#D7FF00] transition-colors duration-300"
-                        style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          color: "#858585",
-                        }}
-                      >
-                        Coming Soon
-                      </span>
-                    </div>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#777777]">
+                      STUDIO SPEC 2026
+                    </span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          {/* CTA */}
-          <div className="mt-24 text-center">
-            <h3
-              className="text-3xl md:text-4xl font-bold mb-6 tracking-tight"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: "#F4F1EA",
-              }}
+      {/* Bottom CTA */}
+      <section className="px-6 md:px-10 lg:px-16">
+        <div className="max-w-[1440px] mx-auto p-8 sm:p-12 md:p-16 rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div>
+            <h2
+              className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-[#111111] mb-2"
+              style={{ fontFamily: "var(--font-display)" }}
             >
               HAVE A PROJECT IN MIND?
-            </h3>
-            <p
-              className="text-base mb-8 max-w-md mx-auto"
-              style={{ color: "#858585" }}
-            >
-              Let&apos;s discuss your idea and bring it to life.
+            </h2>
+            <p className="text-sm text-[#777777]" style={{ fontFamily: "var(--font-body)" }}>
+              Let&apos;s build a digital experience that moves your business forward.
             </p>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                background: "#D7FF00",
-                color: "#090909",
-              }}
-            >
-              Start a Project
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
           </div>
+
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2.5 px-8 py-4.5 rounded-full bg-[#111111] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#FF7139] transition-colors"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            <span>Start a Project</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
     </div>
