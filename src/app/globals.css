@@ -1,54 +1,107 @@
 @import "tailwindcss";
 
 /* =============================================
-   BUILDXUNIQUE — GLOBAL DESIGN SYSTEM
+   BUILDXUNIQUE — PHASE 1 DESIGN SYSTEM FOUNDATION
+   Editorial Visual Language: Anton (Display) + Space Grotesk (Body)
+   White-dominant palette with Near Black & Orange accents
    ============================================= */
 
 /* =============================================
-   DESIGN TOKENS
+   1. DESIGN TOKENS (CSS Custom Properties)
    ============================================= */
 :root {
-  /* Primary */
-  --color-obsidian: #090909;
-  --color-yellow: #D7FF00;
+  /* --- Primary Colour Palette --- */
+  --color-warm-white: #F5F5F2;
+  --color-pure-white: #FFFFFF;
+  --color-near-black: #111111;
+  --color-secondary-black: #1A1A1A;
+  --color-orange: #FF7139;
+  --color-yellow: #F4CE36;
+  --color-muted-grey: #777777;
+  --color-light-border: #DDDDDA;
 
-  /* Secondary */
-  --color-pink: #FF4F9A;
-  --color-warm-white: #F4F1EA;
+  /* --- Semantic Colour Roles --- */
+  --bg-primary: var(--color-warm-white);
+  --bg-secondary: var(--color-pure-white);
+  --bg-dark: var(--color-near-black);
+  --text-primary: var(--color-near-black);
+  --text-secondary: var(--color-muted-grey);
+  --text-accent: var(--color-orange);
+  --accent-primary: var(--color-orange);
+  --accent-secondary: var(--color-yellow);
+  --border-subtle: var(--color-light-border);
 
-  /* Supporting */
-  --color-dark-grey: #171717;
-  --color-mid-grey: #858585;
-  --color-light-grey: #E8E6E1;
-
-  /* Semantic */
-  --background: #090909;
-  --foreground: #F4F1EA;
-
-  /* Typography */
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* --- Typography Font Families --- */
+  --font-display: var(--font-anton), 'Anton', sans-serif;
+  --font-body: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   --font-sans: var(--font-body);
-  --font-mono: var(--font-mono);
 
-  /* Brand Colours */
-  --color-obsidian: #090909;
-  --color-yellow: #D7FF00;
-  --color-pink: #FF4F9A;
-  --color-warm-white: #F4F1EA;
-  --color-dark-grey: #171717;
-  --color-mid-grey: #858585;
-  --color-light-grey: #E8E6E1;
+  /* --- Typography Scale (Responsive clamp) --- */
+  --fs-display-xl: clamp(3.25rem, 8vw + 1rem, 7.5rem);      /* 52px - 120px */
+  --fs-display-lg: clamp(2.5rem, 5.5vw + 0.5rem, 5.25rem);   /* 40px - 84px */
+  --fs-h1: clamp(2rem, 4vw + 0.5rem, 3.75rem);              /* 32px - 60px */
+  --fs-h2: clamp(1.625rem, 2.75vw + 0.25rem, 2.625rem);     /* 26px - 42px */
+  --fs-h3: clamp(1.25rem, 1.8vw + 0.2rem, 1.875rem);        /* 20px - 30px */
+  --fs-body-lg: clamp(1.125rem, 1vw + 0.75rem, 1.3125rem);   /* 18px - 21px */
+  --fs-body: 1rem;                                          /* 16px */
+  --fs-body-sm: 0.875rem;                                   /* 14px */
+  --fs-eyebrow: 0.75rem;                                    /* 12px */
+  --fs-nav: 0.875rem;                                       /* 14px */
+  --fs-btn: 0.875rem;                                       /* 14px */
+
+  /* --- Spacing & Layout Tokens --- */
+  --section-spacing-sm: clamp(3rem, 6vw, 4.5rem);
+  --section-spacing-md: clamp(4.5rem, 8vw, 7.5rem);
+  --section-spacing-lg: clamp(6rem, 12vw, 10rem);
+  --container-max: 1440px;
+  --content-max: 760px;
+  --page-padding-x: clamp(1.25rem, 4vw, 4rem);
+  --grid-gap-sm: clamp(1rem, 2vw, 1.5rem);
+  --grid-gap-md: clamp(1.5rem, 3vw, 2.5rem);
+  --grid-gap-lg: clamp(2rem, 4vw, 4rem);
+  --card-padding-sm: clamp(1.25rem, 2.5vw, 2rem);
+  --card-padding-md: clamp(1.75rem, 3.5vw, 3rem);
+
+  /* --- Border & Radius Tokens --- */
+  --border-width: 1px;
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+
+  /* --- Shadow Tokens (Minimal, Restrained) --- */
+  --shadow-subtle: 0 1px 3px rgba(17, 17, 17, 0.04), 0 1px 2px rgba(17, 17, 17, 0.02);
+  --shadow-card: 0 4px 20px -2px rgba(17, 17, 17, 0.06);
+  --shadow-float: 0 12px 32px -4px rgba(17, 17, 17, 0.08);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =============================================
-   RESET & BASE
+   2. TAILWIND THEME CONFIGURATION
+   ============================================= */
+@theme inline {
+  --color-warm-white: #F5F5F2;
+  --color-pure-white: #FFFFFF;
+  --color-near-black: #111111;
+  --color-secondary-black: #1A1A1A;
+  --color-orange: #FF7139;
+  --color-yellow: #F4CE36;
+  --color-muted-grey: #777777;
+  --color-light-border: #DDDDDA;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-sans: var(--font-body);
+}
+
+/* =============================================
+   3. RESET & BASE
    ============================================= */
 html {
   scroll-behavior: smooth;
@@ -56,10 +109,8 @@ html {
 }
 
 body {
-  background-color: #090909;
-  color: #F4F1EA;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-body);
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -67,67 +118,256 @@ body {
 }
 
 /* =============================================
-   TYPOGRAPHY
+   4. TYPOGRAPHY UTILITIES & SCALE
    ============================================= */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+.font-display {
+  font-family: var(--font-display), sans-serif;
 }
 
-.font-heading { font-family: 'Space Grotesk', sans-serif; }
-.font-body    { font-family: 'Inter', sans-serif; }
+.font-body {
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Display XL */
+.text-display-xl {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--fs-display-xl);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Display Large */
+.text-display-lg {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--fs-display-lg);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Heading 1 */
+.text-heading-1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--fs-h1);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Heading 2 */
+.text-heading-2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--fs-h2);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Heading 3 */
+.text-heading-3 {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Body Large */
+.text-body-lg {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+}
+
+/* Body Regular */
+.text-body-regular {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+/* Body Small */
+.text-body-sm {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+}
+
+/* Eyebrow / Label */
+.text-eyebrow {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Navigation Typography */
+.text-nav {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-nav);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* Button Typography */
+.text-btn {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-btn);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+/* Headings default */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), sans-serif;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* Backward-compatibility helpers */
+.font-heading { font-family: var(--font-display), sans-serif; }
 .font-mono    { font-family: 'IBM Plex Mono', monospace; }
 
 /* =============================================
-   UTILITY CLASSES
+   5. LAYOUT & CONTAINER UTILITIES
    ============================================= */
+.container-custom {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-x);
+}
 
-/* Label / Tag style */
-.label-tag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
+.content-narrow {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+.section-spacing-sm {
+  padding-block: var(--section-spacing-sm);
+}
+
+.section-spacing-md {
+  padding-block: var(--section-spacing-md);
+}
+
+.section-spacing-lg {
+  padding-block: var(--section-spacing-lg);
+}
+
+/* =============================================
+   6. BUTTON FOUNDATIONS
+   ============================================= */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.875rem;
+  background-color: var(--color-near-black);
+  color: var(--color-pure-white);
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-btn);
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-mid-grey);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-near-black);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
 }
 
-/* Yellow accent text */
-.text-accent { color: #D7FF00; }
-
-/* Pink highlight */
-.text-highlight { color: #FF4F9A; }
-
-/* Fine border */
-.border-fine { border-color: rgba(244, 241, 234, 0.1); }
-
-/* =============================================
-   SCROLLBAR
-   ============================================= */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #090909; }
-::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #D7FF00; }
-
-/* =============================================
-   SELECTION
-   ============================================= */
-::selection {
-  background-color: #D7FF00;
-  color: #090909;
+.btn-primary:hover {
+  background-color: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-pure-white);
+  transform: translateY(-1px);
 }
 
-/* =============================================
-   FOCUS STATES (Accessibility)
-   ============================================= */
-:focus-visible {
-  outline: 2px solid #D7FF00;
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-orange);
   outline-offset: 3px;
 }
 
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.875rem;
+  background-color: transparent;
+  color: var(--color-near-black);
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--fs-btn);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-light-border);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-pure-white);
+  border-color: var(--color-near-black);
+  color: var(--color-near-black);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+.btn-secondary:disabled,
+.btn-secondary[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 /* =============================================
-   ANIMATIONS — Base
+   7. ACCESSIBILITY, SELECTION & SCROLLBAR
+   ============================================= */
+:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--color-orange);
+  color: var(--color-pure-white);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-warm-white); }
+::-webkit-scrollbar-thumb { background: #CCCCCC; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-orange); }
+
+/* =============================================
+   8. ANIMATIONS & TRANSITIONS (Preserved)
    ============================================= */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -144,9 +384,6 @@ h1, h2, h3, h4, h5, h6 {
   50%       { d: path("M0,50 Q200,70 400,50 Q600,30 800,50"); }
 }
 
-/* =============================================
-   REDUCED MOTION
-   ============================================= */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -156,9 +393,6 @@ h1, h2, h3, h4, h5, h6 {
   html { scroll-behavior: auto; }
 }
 
-/* =============================================
-   UTILITY — CLIP PATHS
-   ============================================= */
 .clip-reveal {
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
@@ -167,10 +401,7 @@ h1, h2, h3, h4, h5, h6 {
   clip-path: inset(0 0% 0 0);
 }
 
-/* =============================================
-   HORIZONTAL RULE
-   ============================================= */
 hr.fine {
   border: none;
-  border-top: 1px solid rgba(244, 241, 234, 0.1);
+  border-top: 1px solid var(--color-light-border);
 }

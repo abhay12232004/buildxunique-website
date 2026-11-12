@@ -1,395 +1,424 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowUpRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin, Clock } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const serviceOptions = [
-  "Website Development",
-  "E-commerce",
+  "Bespoke Website",
+  "E-Commerce Store",
   "Landing Page",
-  "UI/UX & Redesign",
-  "Maintenance & Optimization",
-  "Other",
+  "UI/UX Design System",
+  "Web Application & SaaS",
 ];
 
 const budgetOptions = [
-  "Under ₹10,000",
-  "₹10,000–₹25,000",
-  "₹25,000–₹50,000",
-  "₹50,000+",
-  "Not decided",
+  "$3,000 – $5,000",
+  "$5,000 – $10,000",
+  "$10,000+",
+  "Custom Enterprise",
 ];
 
 export function ContactSection() {
+  const containerRef = useRef<HTMLElement>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
-    service: "",
-    budget: "",
-    details: "",
+    selectedService: "Bespoke Website",
+    budget: "$5,000 – $10,000",
+    message: "",
     honeypot: "",
   });
 
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
-  );
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.service) {
+    // Honeypot spam check
+    if (formData.honeypot) {
+      setStatus("success");
+      return;
+    }
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setStatus("error");
-      setFeedbackMessage("Please complete all required fields (*).");
+      setErrorMessage("Please complete all required fields (Name, Email, Message).");
       return;
     }
 
     setStatus("loading");
-    setFeedbackMessage("");
+    setErrorMessage("");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          service: formData.selectedService,
+          budget: formData.budget,
+          message: formData.message,
+        }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "Failed to submit enquiry.");
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to deliver message. Please try again.");
       }
 
       setStatus("success");
-      setFeedbackMessage(data.message);
       setFormData({
         name: "",
         email: "",
         company: "",
-        service: "",
-        budget: "",
-        details: "",
+        selectedService: "Bespoke Website",
+        budget: "$5,000 – $10,000",
+        message: "",
         honeypot: "",
       });
     } catch (err: unknown) {
       setStatus("error");
-      const msg = err instanceof Error ? err.message : "Submission failed.";
-      setFeedbackMessage(msg);
+      setErrorMessage(
+        err instanceof Error ? err.message : "Something went wrong. Please email us directly."
+      );
     }
   };
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.fromTo(
+        ".contact-form-container",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".contact-form-container",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
       id="contact"
-      className="relative py-24 md:py-36 border-t"
-      style={{
-        background: "#090909",
-        borderColor: "rgba(244, 241, 234, 0.08)",
-      }}
+      ref={containerRef}
+      aria-label="Contact Buildxunique Studio"
+      className="relative py-24 sm:py-32 md:py-40 px-4 sm:px-6 md:px-10 lg:px-16 bg-[#F5F5F2] border-t border-[#DDDDDA]/70"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Left Column: Headline and Context */}
-          <div className="lg:col-span-5">
-            <span
-              className="text-xs tracking-widest uppercase mb-4 inline-block"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                color: "#858585",
-              }}
-            >
-              Start a Project
-            </span>
+      <div className="max-w-[1440px] mx-auto">
+        {/* SECTION HEADER HUD */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
+          <div>
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
+              <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
+              <span>009 // COMMENCE DIALOGUE</span>
+            </div>
             <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                color: "#F4F1EA",
-              }}
+              className="text-[clamp(2.5rem,6vw,5.5rem)] font-normal text-[#111111] uppercase leading-[0.95] tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              LET&apos;S BUILD <br />
-              SOMETHING <br />
-              <span style={{ color: "#D7FF00" }}>THAT MATTERS.</span>
+              START A PROJECT.
             </h2>
-            <p
-              className="text-base md:text-lg leading-relaxed mb-8"
-              style={{ color: "#858585" }}
-            >
-              Have an idea, a business or a website that needs a better
-              direction? Let&apos;s talk.
-            </p>
+          </div>
 
-            <div
-              className="p-6 border"
-              style={{
-                borderColor: "rgba(244, 241, 234, 0.08)",
-                background: "#0c0c0c",
-              }}
-            >
-              <h4
-                className="text-sm font-semibold tracking-wider uppercase mb-2"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  color: "#D7FF00",
-                }}
-              >
-                What happens next?
-              </h4>
-              <p className="text-xs leading-relaxed" style={{ color: "#858585" }}>
-                1. We review your requirements within 24-48 business hours.
-                <br />
-                2. We schedule an introductory strategy conversation.
-                <br />
-                3. We provide a structured roadmap and scope estimate.
+          <p
+            className="max-w-md text-sm sm:text-base text-[#777777] leading-relaxed"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            Have an upcoming project or ambitious digital vision? Fill in the details below, and our studio leads will respond within 24 business hours.
+          </p>
+        </div>
+
+        {/* 2-COLUMN SPREAD: STUDIO DETAILS + INTERACTIVE ENQUIRY FORM */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* LEFT 5 COLS: STUDIO DETAILS & DIRECT CHANNELS */}
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
+            <div className="p-8 rounded-2xl border border-[#DDDDDA] bg-white space-y-6 shadow-xs">
+              <span className="text-xs font-mono tracking-[0.2em] uppercase text-[#FF7139] font-bold block">
+                DIRECT STUDIO COMMS
+              </span>
+
+              <div className="space-y-4 text-sm text-[#111111]">
+                <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-[#FF7139] mt-0.5 shrink-0" />
+                  <div>
+                    <span className="text-xs font-mono text-[#777777] block">DIRECT INQUIRIES</span>
+                    <a
+                      href="mailto:hello@buildxunique.com"
+                      className="font-semibold hover:text-[#FF7139] transition-colors"
+                    >
+                      hello@buildxunique.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#FF7139] mt-0.5 shrink-0" />
+                  <div>
+                    <span className="text-xs font-mono text-[#777777] block">PRIMARY HEADQUARTERS</span>
+                    <span className="font-semibold">New Delhi, India — Available Globally</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Clock className="w-4 h-4 text-[#FF7139] mt-0.5 shrink-0" />
+                  <div>
+                    <span className="text-xs font-mono text-[#777777] block">RESPONSE PROMISE</span>
+                    <span className="font-semibold">&lt; 24 Hours on Business Days</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-[#DDDDDA]/70 flex items-center justify-between text-xs font-mono text-[#777777]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>ACCEPTING COMMISSIONS</span>
+                </div>
+                <span>Q1 / Q2 2026</span>
+              </div>
+            </div>
+
+            {/* HONEST STUDIO NOTICE */}
+            <div className="p-6 rounded-2xl border border-[#DDDDDA] bg-[#F5F5F2] text-xs text-[#777777] space-y-2 font-mono">
+              <span className="text-[#111111] font-bold block uppercase tracking-wider">
+                STUDIO PRODUCTION CAPACITY
+              </span>
+              <p>
+                To safeguard obsessive craft, we cap concurrent client intake at 2 active builds per production cycle.
               </p>
             </div>
           </div>
 
-          {/* Right Column: Enquiry Form */}
-          <div className="lg:col-span-7">
-            <form
-              onSubmit={handleSubmit}
-              className="p-8 md:p-12 border relative"
-              style={{
-                background: "#0d0d0d",
-                borderColor: "rgba(244, 241, 234, 0.08)",
-              }}
-            >
-              {/* Spam Honeypot (Hidden) */}
-              <input
-                type="text"
-                name="honeypot"
-                value={formData.honeypot}
-                onChange={handleChange}
-                style={{ display: "none" }}
-                tabIndex={-1}
-                autoComplete="off"
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                {/* Full Name */}
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-xs tracking-widest uppercase mb-2"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#858585",
-                    }}
-                  >
-                    Full Name <span style={{ color: "#D7FF00" }}>*</span>
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="e.g. Alex Carter"
-                    className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] placeholder-[#555] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                    style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                  />
+          {/* RIGHT 7 COLS: INTERACTIVE FORM */}
+          <div className="contact-form-container lg:col-span-7 rounded-2xl border border-[#DDDDDA] bg-white p-6 sm:p-10 shadow-xs">
+            {status === "success" ? (
+              <div className="py-12 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+                  <CheckCircle2 className="w-8 h-8" />
                 </div>
-
-                {/* Email Address */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-xs tracking-widest uppercase mb-2"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#858585",
-                    }}
-                  >
-                    Email Address <span style={{ color: "#D7FF00" }}>*</span>
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="alex@company.com"
-                    className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] placeholder-[#555] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                    style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                  />
-                </div>
-              </div>
-
-              {/* Company / Brand */}
-              <div className="mb-6">
-                <label
-                  htmlFor="company"
-                  className="block text-xs tracking-widest uppercase mb-2"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    color: "#858585",
-                  }}
+                <h3
+                  className="text-3xl font-bold text-[#111111] uppercase tracking-tight"
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Company / Brand
-                </label>
+                  MESSAGE DELIVERED.
+                </h3>
+                <p className="text-sm text-[#777777] max-w-md mx-auto">
+                  Thank you for reaching out. We have logged your project inquiry and will be in touch with a preliminary kickoff proposal within 24 hours.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setStatus("idle")}
+                  className="mt-6 px-6 py-2.5 rounded-full border border-[#DDDDDA] text-xs font-mono uppercase text-[#111111] hover:border-[#111111] transition-colors"
+                >
+                  Send Another Inquiry
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field (hidden from real users) */}
                 <input
-                  id="company"
-                  name="company"
                   type="text"
-                  value={formData.company}
-                  onChange={handleChange}
-                  placeholder="e.g. Acme Studio"
-                  className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] placeholder-[#555] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                  style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
+                  name="_gotcha"
+                  value={formData.honeypot}
+                  onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                  style={{ display: "none" }}
+                  tabIndex={-1}
+                  autoComplete="off"
                 />
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                {/* Required Service */}
+                {/* Service Selection Chips */}
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-3">
+                    01 // SELECT SERVICE DISCIPLINE
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {serviceOptions.map((srv) => {
+                      const isSelected = formData.selectedService === srv;
+                      return (
+                        <button
+                          key={srv}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, selectedService: srv })}
+                          className={cn(
+                            "px-3.5 py-2 rounded-full text-xs font-mono uppercase transition-all duration-150 border",
+                            isSelected
+                              ? "bg-[#111111] text-white border-[#111111] shadow-xs"
+                              : "bg-[#F5F5F2] text-[#777777] border-[#DDDDDA] hover:border-[#111111] hover:text-[#111111]"
+                          )}
+                        >
+                          {srv}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Budget Selection Chips */}
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-3">
+                    02 // ESTIMATED PROJECT BUDGET (USD)
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {budgetOptions.map((bgt) => {
+                      const isSelected = formData.budget === bgt;
+                      return (
+                        <button
+                          key={bgt}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, budget: bgt })}
+                          className={cn(
+                            "px-3.5 py-2 rounded-full text-xs font-mono uppercase transition-all duration-150 border",
+                            isSelected
+                              ? "bg-[#FF7139] text-white border-[#FF7139] shadow-xs"
+                              : "bg-[#F5F5F2] text-[#777777] border-[#DDDDDA] hover:border-[#111111] hover:text-[#111111]"
+                          )}
+                        >
+                          {bgt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Name & Email Fields */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                  <div>
+                    <label
+                      htmlFor="contact-name"
+                      className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2"
+                    >
+                      YOUR NAME *
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g. Elena Rostova"
+                      className="w-full px-4 py-3 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] text-sm text-[#111111] placeholder-[#777777]/60 focus:outline-hidden focus:border-[#FF7139] focus:bg-white transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="contact-email"
+                      className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2"
+                    >
+                      WORK EMAIL *
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="elena@company.com"
+                      className="w-full px-4 py-3 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] text-sm text-[#111111] placeholder-[#777777]/60 focus:outline-hidden focus:border-[#FF7139] focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Company / Brand Name */}
                 <div>
                   <label
-                    htmlFor="service"
-                    className="block text-xs tracking-widest uppercase mb-2"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#858585",
-                    }}
+                    htmlFor="contact-company"
+                    className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2"
                   >
-                    Required Service <span style={{ color: "#D7FF00" }}>*</span>
+                    COMPANY OR BRAND NAME
                   </label>
-                  <select
-                    id="service"
-                    name="service"
+                  <input
+                    id="contact-company"
+                    type="text"
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    placeholder="e.g. Apex Labs or Personal Project"
+                    className="w-full px-4 py-3 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] text-sm text-[#111111] placeholder-[#777777]/60 focus:outline-hidden focus:border-[#FF7139] focus:bg-white transition-all"
+                  />
+                </div>
+
+                {/* Project Message */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label
+                      htmlFor="contact-message"
+                      className="block text-xs font-mono uppercase tracking-wider text-[#777777]"
+                    >
+                      PROJECT BRIEF & GOALS *
+                    </label>
+                    <span className="text-[10px] font-mono text-[#777777]">
+                      {formData.message.length} CHARS
+                    </span>
+                  </div>
+                  <textarea
+                    id="contact-message"
                     required
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                    style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                  >
-                    <option value="">Select a service...</option>
-                    {serviceOptions.map((opt) => (
-                      <option key={opt} value={opt} className="bg-[#090909]">
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Tell us about your brand, what you're building, target launch window, and any design references..."
+                    className="w-full px-4 py-3 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] text-sm text-[#111111] placeholder-[#777777]/60 focus:outline-hidden focus:border-[#FF7139] focus:bg-white transition-all resize-y"
+                  />
                 </div>
 
-                {/* Estimated Budget */}
-                <div>
-                  <label
-                    htmlFor="budget"
-                    className="block text-xs tracking-widest uppercase mb-2"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#858585",
-                    }}
-                  >
-                    Estimated Budget
-                  </label>
-                  <select
-                    id="budget"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                    style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                  >
-                    <option value="">Select budget range...</option>
-                    {budgetOptions.map((opt) => (
-                      <option key={opt} value={opt} className="bg-[#090909]">
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Project Details */}
-              <div className="mb-8">
-                <label
-                  htmlFor="details"
-                  className="block text-xs tracking-widest uppercase mb-2"
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    color: "#858585",
-                  }}
-                >
-                  Project Details <span style={{ color: "#D7FF00" }}>*</span>
-                </label>
-                <textarea
-                  id="details"
-                  name="details"
-                  rows={4}
-                  required
-                  value={formData.details}
-                  onChange={handleChange}
-                  placeholder="Tell us about your brand, current challenges, and project objectives..."
-                  className="w-full bg-[#141414] border px-4 py-3 text-sm text-[#F4F1EA] placeholder-[#555] focus:outline-none focus:border-[#D7FF00] transition-colors"
-                  style={{ borderColor: "rgba(244, 241, 234, 0.12)" }}
-                />
-              </div>
-
-              {/* Feedback Alert */}
-              {status === "error" && (
-                <div
-                  className="mb-6 p-4 border flex items-center gap-3 text-xs"
-                  style={{
-                    borderColor: "rgba(255, 79, 154, 0.4)",
-                    background: "rgba(255, 79, 154, 0.08)",
-                    color: "#FF4F9A",
-                  }}
-                >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>{feedbackMessage}</span>
-                </div>
-              )}
-
-              {status === "success" && (
-                <div
-                  className="mb-6 p-4 border flex items-center gap-3 text-xs"
-                  style={{
-                    borderColor: "rgba(215, 255, 0, 0.4)",
-                    background: "rgba(215, 255, 0, 0.08)",
-                    color: "#D7FF00",
-                  }}
-                >
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                  <span>{feedbackMessage}</span>
-                </div>
-              )}
-
-              {/* Submit CTA */}
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className="w-full group flex items-center justify-center gap-3 py-4 text-xs tracking-widest uppercase font-semibold transition-all duration-300 disabled:opacity-50"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  background: "#D7FF00",
-                  color: "#090909",
-                }}
-              >
-                {status === "loading" ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Submitting Enquiry...
-                  </>
-                ) : (
-                  <>
-                    Submit Project Enquiry
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </>
+                {/* Error Banner */}
+                {status === "error" && (
+                  <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
                 )}
-              </button>
-            </form>
+
+                {/* Submit Action */}
+                <div className="pt-2">
+                  <MagneticButton strength={0.3} className="w-full sm:w-auto">
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      data-cursor="TRANSMIT"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#111111] text-white text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-[#FF7139] hover:shadow-[0_6px_24px_rgba(255,113,57,0.3)] transition-all duration-300 disabled:opacity-60"
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Delivering Inquiry...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Transmit Project Brief</span>
+                          <Send className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </MagneticButton>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
