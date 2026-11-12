@@ -133,7 +133,17 @@ export default function ServicesPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(
+          [
+            ".services-hero-label",
+            ".services-hero-title",
+            ".services-hero-sub",
+          ],
+          { opacity: 1, y: 0 }
+        );
+        return;
+      }
 
       gsap.fromTo(
         ".services-hero-label",
@@ -159,7 +169,10 @@ export default function ServicesPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set([".service-card", ".process-step"], { opacity: 1, y: 0, x: 0 });
+        return;
+      }
 
       gsap.utils.toArray<HTMLElement>(".service-card").forEach((card, i) => {
         gsap.fromTo(
@@ -394,7 +407,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="space-y-0">
-              {process_steps.map((step, i) => (
+              {process_steps.map((step) => (
                 <div
                   key={step.step}
                   className="process-step opacity-0 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 py-8 border-b"
@@ -461,3 +474,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+

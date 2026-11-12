@@ -15,7 +15,19 @@ export function HeroSection() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(
+          [
+            ".hero-label",
+            ".hero-headline",
+            ".hero-sub",
+            ".hero-ctas",
+            ".hero-character",
+          ],
+          { opacity: 1, y: 0, x: 0, scale: 1 }
+        );
+        return;
+      }
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -78,6 +90,7 @@ export function HeroSection() {
     >
       {/* Subtle background gradient */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
@@ -87,6 +100,7 @@ export function HeroSection() {
 
       {/* Fine grid overlay */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
           backgroundImage:
@@ -212,7 +226,7 @@ export function HeroSection() {
             />
 
             {/* Rope SVG */}
-            <div className="absolute inset-0 flex items-center">
+            <div aria-hidden="true" className="absolute inset-0 flex items-center">
               <svg
                 viewBox="0 0 720 60"
                 preserveAspectRatio="none"

@@ -38,14 +38,15 @@ Status: IN PROGRESS
 - [x] Implement contact form (client-side form with field validation and submit state)
 - [x] SEO and metadata (metadataBase set, per-route metadata via layout files, OpenGraph, Twitter cards)
 - [x] Page.tsx wired up (replaced default Next.js template with actual components)
+- [x] Responsive testing & mobile optimization (RopePullSection desktop pinning isolated via `gsap.matchMedia` for >=768px; dedicated mobile service view; responsive navigation drawer with Escape key and route-change handlers)
+- [x] Accessibility audit & WCAG compliance (added skip-to-content link, `main#main-content`, `aria-expanded`/`aria-controls` on mobile menu toggle, `aria-hidden` on all decorative SVGs, `role="status"` on contact form confirmation, full `prefers-reduced-motion` fallbacks across all GSAP animations)
+- [x] Code quality & linting (0 ESLint errors, 0 ESLint warnings, production build clean)
 
 
 
 ## Pending Tasks
 
-- [ ] Responsive testing (visual QA across breakpoints)
-- [ ] Accessibility audit (ARIA labels, keyboard nav, contrast)
-- [ ] Final deployment
+- [ ] Final deployment (e.g. Vercel / custom hosting)
 
 
 
@@ -57,7 +58,7 @@ None.
 
 ## Next Action
 
-Run dev server and perform responsive testing across all pages and breakpoints.
+Ready for final deployment / review by user.
 
 
 
@@ -73,14 +74,18 @@ Run dev server and perform responsive testing across all pages and breakpoints.
 ## Changed Files (This Session)
 
 - `src/app/page.tsx` — Replaced default template with HeroSection + RopePullSection + PortfolioSection
-- `src/app/layout.tsx` — Added metadataBase
-- `src/app/globals.css` — Fixed @import ordering
-- `src/components/layout/Footer.tsx` — Added "use client", fixed new Date() prerender error
-- `src/app/services/page.tsx` — NEW: Full services page
-- `src/app/services/layout.tsx` — NEW: Services metadata
-- `src/app/about/page.tsx` — NEW: Full about page
-- `src/app/about/layout.tsx` — NEW: About metadata
-- `src/app/contact/page.tsx` — NEW: Full contact page with form
-- `src/app/contact/layout.tsx` — NEW: Contact metadata
-- `src/app/work/page.tsx` — NEW: Full work/portfolio page
-- `src/app/work/layout.tsx` — NEW: Work metadata
+- `src/app/layout.tsx` — Added metadataBase, skip-to-content link, accessible main landmark; removed redundant font link tags
+- `src/app/globals.css` — Fixed @import ordering; added `prefers-reduced-motion` global styling
+- `src/components/layout/Footer.tsx` — Added "use client", non-cascading dynamic year effect, accessible back-to-top button
+- `src/components/layout/Navigation.tsx` — Accessible navigation landmark, aria-expanded/aria-controls, Escape key handler, React 19 render-time route change handling
+- `src/components/sections/HeroSection.tsx` — Added aria-hidden on decorative SVGs, full reduced motion support
+- `src/components/sections/RopePullSection.tsx` — Separated desktop and mobile sections; wrapped ScrollTrigger in `gsap.matchMedia` (>=768px); aria-hidden on rope SVGs
+- `src/components/sections/PortfolioSection.tsx` — Added reduced motion support
+- `src/app/services/page.tsx` — Full services page with reduced motion support; cleaned up unused parameters
+- `src/app/services/layout.tsx` — Services metadata
+- `src/app/about/page.tsx` — Full about page with reduced motion support
+- `src/app/about/layout.tsx` — About metadata
+- `src/app/contact/page.tsx` — Full contact page with accessible form, `role="status"` confirmation, reduced motion support
+- `src/app/contact/layout.tsx` — Contact metadata
+- `src/app/work/page.tsx` — Full work/portfolio page with reduced motion support; cleaned up unused parameters
+- `src/app/work/layout.tsx` — Work metadata

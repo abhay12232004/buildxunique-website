@@ -22,7 +22,18 @@ export default function ContactPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(
+          [
+            ".contact-hero-label",
+            ".contact-hero-title",
+            ".contact-form-area",
+            ".contact-info",
+          ],
+          { opacity: 1, y: 0 }
+        );
+        return;
+      }
 
       gsap.fromTo(
         ".contact-hero-label",
@@ -123,6 +134,8 @@ export default function ContactPage() {
             <div className="contact-form-area opacity-0 lg:col-span-8">
               {submitted ? (
                 <div
+                  role="status"
+                  aria-live="polite"
                   className="border p-12 md:p-16 text-center"
                   style={{ borderColor: "rgba(215,255,0,0.3)" }}
                 >
@@ -518,3 +531,4 @@ export default function ContactPage() {
     </div>
   );
 }
+

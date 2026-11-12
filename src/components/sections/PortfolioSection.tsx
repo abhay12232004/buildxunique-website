@@ -51,6 +51,13 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
   useGSAP(
     () => {
       if (!cardRef.current) return;
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) {
+        gsap.set(cardRef.current, { opacity: 1, y: 0 });
+        return;
+      }
       gsap.fromTo(
         cardRef.current,
         { opacity: 0, y: 50 },
@@ -149,6 +156,13 @@ export function PortfolioSection() {
 
   useGSAP(
     () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) {
+        gsap.set(".portfolio-heading", { opacity: 1, y: 0 });
+        return;
+      }
       gsap.fromTo(
         ".portfolio-heading",
         { opacity: 0, y: 40 },

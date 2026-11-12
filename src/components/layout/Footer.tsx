@@ -24,7 +24,10 @@ export function Footer() {
   const [year, setYear] = useState(2026);
 
   useEffect(() => {
-    setYear(new Date().getFullYear());
+    const timer = setTimeout(() => {
+      setYear(new Date().getFullYear());
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -151,7 +154,8 @@ export function Footer() {
           </p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-xs tracking-widest uppercase hover:text-[#D7FF00] transition-colors"
+            aria-label="Back to top"
+            className="text-xs tracking-widest uppercase hover:text-[#D7FF00] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D7FF00] p-1"
             style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#858585" }}
           >
             Back to Top ↑

@@ -81,7 +81,13 @@ export default function WorkPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(
+          [".work-hero-label", ".work-hero-title", ".work-hero-sub"],
+          { opacity: 1, y: 0 }
+        );
+        return;
+      }
 
       gsap.fromTo(
         ".work-hero-label",
@@ -107,7 +113,10 @@ export default function WorkPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(".work-project", { opacity: 1, y: 0 });
+        return;
+      }
 
       gsap.utils.toArray<HTMLElement>(".work-project").forEach((card, i) => {
         gsap.fromTo(
@@ -188,7 +197,7 @@ export default function WorkPage() {
       >
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="space-y-12">
-            {projects.map((project, i) => (
+            {projects.map((project) => (
               <div
                 key={project.id}
                 className="work-project opacity-0 border group cursor-pointer overflow-hidden"
@@ -333,3 +342,4 @@ export default function WorkPage() {
     </div>
   );
 }
+

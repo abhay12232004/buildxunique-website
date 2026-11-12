@@ -53,7 +53,18 @@ export default function AboutPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(
+          [
+            ".about-hero-label",
+            ".about-hero-title",
+            ".about-hero-sub",
+            ".about-character",
+          ],
+          { opacity: 1, y: 0, scale: 1 }
+        );
+        return;
+      }
 
       gsap.fromTo(
         ".about-hero-label",
@@ -84,7 +95,10 @@ export default function AboutPage() {
       const prefersReduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set([".value-card", ".stat-item"], { opacity: 1, y: 0 });
+        return;
+      }
 
       gsap.utils.toArray<HTMLElement>(".value-card").forEach((card, i) => {
         gsap.fromTo(
@@ -422,3 +436,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

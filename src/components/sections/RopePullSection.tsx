@@ -68,63 +68,67 @@ export function RopePullSection() {
       if (prefersReduced.current) return;
       if (!sectionRef.current || !pinRef.current) return;
 
-      const totalScrollDistance =
-        (services.length + 1) * window.innerHeight * 0.9;
+      const mm = gsap.matchMedia();
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${totalScrollDistance}`,
-        pin: pinRef.current,
-        pinSpacing: true,
-        scrub: 0.6,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const serviceProgress = progress / (services.length / (services.length + 1));
-          const idx = Math.min(
-            Math.floor(serviceProgress * services.length),
-            services.length - 1
-          );
+      mm.add("(min-width: 768px)", () => {
+        const totalScrollDistance =
+          (services.length + 1) * window.innerHeight * 0.9;
 
-          setActiveIndex(idx);
-          setShowWelcome(progress > 0.85);
-
-          /* Rope deform */
-          if (ropeRef.current) {
-            const tension = Math.sin(progress * Math.PI * 3) * 25;
-            ropeRef.current.setAttribute(
-              "d",
-              `M0,30 Q240,${30 - tension} 480,30 Q720,${30 + tension} 960,30`
+        const trigger = ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${totalScrollDistance}`,
+          pin: pinRef.current,
+          pinSpacing: true,
+          scrub: 0.6,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const serviceProgress = progress / (services.length / (services.length + 1));
+            const idx = Math.min(
+              Math.floor(serviceProgress * services.length),
+              services.length - 1
             );
-          }
 
-          /* Character lean */
-          if (characterRef.current) {
-            gsap.set(characterRef.current, {
-              rotation: -8 * Math.min(progress * 1.5, 1),
-              transformOrigin: "bottom center",
-            });
-          }
-        },
+            setActiveIndex(idx);
+            setShowWelcome(progress > 0.85);
+
+            /* Rope deform */
+            if (ropeRef.current) {
+              const tension = Math.sin(progress * Math.PI * 3) * 25;
+              ropeRef.current.setAttribute(
+                "d",
+                `M0,30 Q240,${30 - tension} 480,30 Q720,${30 + tension} 960,30`
+              );
+            }
+
+            /* Character lean */
+            if (characterRef.current) {
+              gsap.set(characterRef.current, {
+                rotation: -8 * Math.min(progress * 1.5, 1),
+                transformOrigin: "bottom center",
+              });
+            }
+          },
+        });
+
+        return () => trigger.kill();
       });
 
-      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+      return () => mm.revert();
     },
     { scope: sectionRef }
   );
-
-  /* Mobile: no pinning, just show services sequentially */
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <div ref={sectionRef}>
       <div
         ref={pinRef}
-        className="relative w-full overflow-hidden"
+        className="hidden md:block relative w-full overflow-hidden"
         style={{ height: "100vh", background: "#090909" }}
       >
         {/* Background */}
         <div
+          aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
@@ -159,7 +163,7 @@ export function RopePullSection() {
         </div>
 
         {/* Rope SVG */}
-        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 pointer-events-none z-10">
+        <div aria-hidden="true" className="absolute top-1/2 left-0 right-0 -translate-y-1/2 pointer-events-none z-10">
           <svg
             viewBox="0 0 960 60"
             preserveAspectRatio="none"

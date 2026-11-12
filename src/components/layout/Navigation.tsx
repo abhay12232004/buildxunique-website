@@ -20,8 +20,15 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  /* Adjust state during render when pathname changes */
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setIsMenuOpen(false);
+  }
 
   /* Scroll state */
   useEffect(() => {
@@ -30,10 +37,15 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Close menu on route change */
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMenuOpen]);
 
   /* Mobile menu animation */
   useGSAP(
@@ -84,7 +96,10 @@ export function Navigation() {
           : "bg-transparent"
       )}
     >
-      <nav className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 h-[72px] flex items-center justify-between">
+      <nav
+        aria-label="Main Navigation"
+        className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 h-[72px] flex items-center justify-between"
+      >
         {/* Logo */}
         <Link
           href="/"
@@ -129,8 +144,10 @@ export function Navigation() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setIsMenuOpen((v) => !v)}
-          className="md:hidden text-[#F4F1EA] hover:text-[#D7FF00] transition-colors p-2"
+          className="md:hidden text-[#F4F1EA] hover:text-[#D7FF00] transition-colors p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D7FF00]"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
         >
           {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -138,7 +155,9 @@ export function Navigation() {
 
       {/* Mobile menu */}
       <div
+        id="mobile-navigation"
         ref={mobileMenuRef}
+        aria-label="Mobile Navigation"
         style={{ display: "none" }}
         className="md:hidden flex-col bg-[#090909]/98 backdrop-blur-md border-b border-white/5 px-6 pb-8 pt-4"
       >
