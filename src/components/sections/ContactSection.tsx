@@ -104,12 +104,28 @@ export function ContactSection() {
       if (prefersReduced) return;
 
       gsap.fromTo(
+        ".section-intro",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".section-intro",
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      gsap.fromTo(
         ".contact-form-container",
         { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.55,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".contact-form-container",
@@ -131,7 +147,7 @@ export function ContactSection() {
     >
       <div className="max-w-[1440px] mx-auto">
         {/* SECTION HEADER HUD */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
+        <div className="section-intro flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
               <span className="w-2 h-2 rounded-full bg-[#FF7139]" />

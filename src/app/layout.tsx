@@ -85,8 +85,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`h-full ${anton.variable} ${spaceGrotesk.variable}`}>
-      <body className="h-full antialiased font-body relative" style={{ background: "#F5F5F2", color: "#111111" }}>
+    <html lang="en" data-scroll-behavior="smooth" className={`h-full ${anton.variable} ${spaceGrotesk.variable}`}>
+      <body className="h-full antialiased font-body relative">
         <NoiseOverlay />
         <CustomCursor />
         <Navigation />

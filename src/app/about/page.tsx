@@ -74,7 +74,7 @@ export default function AboutPage() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.7,
+            duration: 0.55,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
@@ -173,7 +173,7 @@ export default function AboutPage() {
             {values.map((val) => (
               <div
                 key={val.number}
-                className="about-card p-8 rounded-2xl border border-[#DDDDDA] bg-white hover:border-[#111111] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                className="about-card motion-card p-8 rounded-2xl border border-[#DDDDDA] bg-white hover:border-[#111111] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   <span className="text-xs font-mono tracking-widest text-[#FF7139] block mb-6">

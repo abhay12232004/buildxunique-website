@@ -85,23 +85,74 @@ export function PortfolioSection() {
       ).matches;
       if (prefersReduced) return;
 
-      gsap.utils.toArray<HTMLElement>(".portfolio-card").forEach((card) => {
+      gsap.fromTo(
+        ".section-intro",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".section-intro",
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      if (viewMode === "grid") {
         gsap.fromTo(
-          card,
-          { opacity: 0, y: 40 },
+          ".portfolio-card",
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.55,
+            stagger: 0.12,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: card,
+              trigger: ".portfolio-grid",
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
           }
         );
-      });
+      }
+
+      gsap.utils
+        .toArray<HTMLElement>(".portfolio-preview-art")
+        .forEach((art) => {
+          const preview = art.closest(".portfolio-preview");
+          if (!preview) return;
+
+          gsap.fromTo(
+            art,
+            { opacity: 0.7, scale: 0.96 },
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.55,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: preview,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+
+          gsap.to(art, {
+            yPercent: -8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: preview,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.4,
+            },
+          });
+        });
     },
     { dependencies: [activeTab, viewMode], scope: containerRef }
   );
@@ -114,7 +165,7 @@ export function PortfolioSection() {
     >
       <div className="max-w-[1440px] mx-auto">
         {/* SECTION HEADER HUD */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-12 sm:mb-16 border-b border-[#DDDDDA] gap-6">
+        <div className="section-intro flex flex-col md:flex-row md:items-end justify-between pb-8 mb-12 sm:mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
               <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
@@ -202,12 +253,12 @@ export function PortfolioSection() {
             VIEW MODE A: IMMERSIVE VISUAL CARD GRID
             ======================================================== */}
         {viewMode === "grid" && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="portfolio-grid grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 data-cursor="INSPECT"
-                className="portfolio-card group relative rounded-2xl border border-[#DDDDDA] bg-white p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-[#111111] hover:shadow-[0_16px_48px_rgba(17,17,17,0.08)]"
+                className="portfolio-card motion-card group relative rounded-2xl border border-[#DDDDDA] bg-white p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-[#111111] hover:shadow-[0_16px_48px_rgba(17,17,17,0.08)]"
               >
                 <div>
                   {/* Card Top Meta */}
@@ -232,7 +283,7 @@ export function PortfolioSection() {
                   </div>
 
                   {/* INTERACTIVE DEVICE FRAME PREVIEW CANVAS */}
-                  <div className="relative my-6 aspect-16/10 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] overflow-hidden p-6 flex flex-col justify-between group-hover:border-[#111111]/30 transition-colors">
+                  <div className="portfolio-preview relative my-6 aspect-16/10 rounded-xl border border-[#DDDDDA] bg-[#F5F5F2] overflow-hidden p-6 flex flex-col justify-between group-hover:border-[#111111]/30 transition-colors">
                     {/* Simulated Browser Bar */}
                     <div className="flex items-center justify-between pb-3 border-b border-[#DDDDDA]/60 text-[10px] font-mono text-[#777777]">
                       <div className="flex items-center gap-1.5">
@@ -248,7 +299,7 @@ export function PortfolioSection() {
 
                     {/* Preview Type Rendering */}
                     {project.previewType === "terminal" ? (
-                      <div className="my-auto font-mono text-xs text-[#111111] bg-white p-4 rounded-lg border border-[#DDDDDA]/80 shadow-xs">
+                      <div className="portfolio-preview-art my-auto font-mono text-xs text-[#111111] bg-white p-4 rounded-lg border border-[#DDDDDA]/80 shadow-xs">
                         <div className="flex items-center gap-2 text-[#777777] text-[10px] mb-2 pb-1 border-b border-[#DDDDDA]/40">
                           <Terminal className="w-3 h-3 text-[#FF7139]" />
                           <span>vanta-cli // production build</span>
@@ -258,7 +309,7 @@ export function PortfolioSection() {
                         <p className="text-[#777777] mt-0.5">Latency: 14ms (P99) • SSL Active</p>
                       </div>
                     ) : project.previewType === "fintech" ? (
-                      <div className="my-auto bg-white p-5 rounded-lg border border-[#DDDDDA]/80 shadow-xs flex flex-col gap-3">
+                      <div className="portfolio-preview-art my-auto bg-white p-5 rounded-lg border border-[#DDDDDA]/80 shadow-xs flex flex-col gap-3">
                         <div className="flex items-center justify-between text-xs font-mono">
                           <span className="text-[#777777]">TOTAL PORTFOLIO NET YIELD</span>
                           <span className="text-emerald-600 font-bold">+24.8% APR</span>
@@ -273,7 +324,7 @@ export function PortfolioSection() {
                         </div>
                       </div>
                     ) : project.previewType === "architecture" ? (
-                      <div className="my-auto bg-white p-6 rounded-lg border border-[#DDDDDA]/80 shadow-xs text-center flex flex-col items-center justify-center">
+                      <div className="portfolio-preview-art my-auto bg-white p-6 rounded-lg border border-[#DDDDDA]/80 shadow-xs text-center flex flex-col items-center justify-center">
                         <span className="text-[10px] font-mono tracking-[0.2em] text-[#777777] uppercase">
                           MONOGRAPH // SPATIAL ARCHITECTURE
                         </span>
@@ -285,7 +336,7 @@ export function PortfolioSection() {
                         </span>
                       </div>
                     ) : (
-                      <div className="my-auto bg-white p-5 rounded-lg border border-[#DDDDDA]/80 shadow-xs flex items-center justify-between">
+                      <div className="portfolio-preview-art my-auto bg-white p-5 rounded-lg border border-[#DDDDDA]/80 shadow-xs flex items-center justify-between">
                         <div>
                           <span className="text-[10px] font-mono text-[#777777] uppercase">AUTUMN ATELIER // 2026</span>
                           <h4 className="text-lg font-bold text-[#111111]" style={{ fontFamily: "var(--font-display)" }}>

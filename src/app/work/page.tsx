@@ -107,6 +107,16 @@ export default function WorkPage() {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" }
       );
+    },
+    { scope: heroRef }
+  );
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
 
       gsap.utils.toArray<HTMLElement>(".work-card").forEach((card) => {
         gsap.fromTo(
@@ -115,7 +125,7 @@ export default function WorkPage() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.75,
+            duration: 0.55,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
@@ -191,7 +201,7 @@ export default function WorkPage() {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="work-card group rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white overflow-hidden transition-all duration-300 hover:border-[#111111] hover:shadow-md"
+              className="work-card motion-card group rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white overflow-hidden transition-all duration-300 hover:border-[#111111] hover:shadow-md"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
                 {/* Visual Canvas Column */}

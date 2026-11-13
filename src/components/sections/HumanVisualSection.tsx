@@ -79,13 +79,13 @@ export function HumanVisualSection() {
             {
               color: "#111111",
               y: 0,
-              duration: 1,
+              duration: 0.6,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: line,
                 start: "top 88%",
-                end: "top 52%",
-                scrub: 0.8,
+                end: "top 64%",
+                scrub: 0.4,
               },
             }
           );
@@ -98,7 +98,7 @@ export function HumanVisualSection() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.55,
           stagger: 0.16,
           ease: "power3.out",
           scrollTrigger: {
@@ -117,7 +117,7 @@ export function HumanVisualSection() {
           trigger: sectionRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.4,
         },
       });
     },
@@ -264,7 +264,7 @@ export function HumanVisualSection() {
               <div
                 key={pillar.number}
                 data-cursor="INSPECT"
-                className="pillar-card group relative p-8 sm:p-10 rounded-2xl border border-[#DDDDDA] bg-white transition-all duration-300 hover:border-[#111111] hover:shadow-[0_12px_40px_rgba(17,17,17,0.06)] flex flex-col justify-between"
+                className="pillar-card motion-card group relative p-8 sm:p-10 rounded-2xl border border-[#DDDDDA] bg-white transition-all duration-300 hover:border-[#111111] hover:shadow-[0_12px_40px_rgba(17,17,17,0.06)] flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between pb-6 border-b border-[#DDDDDA]/60">

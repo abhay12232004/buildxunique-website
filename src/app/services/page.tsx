@@ -167,6 +167,16 @@ export default function ServicesPage() {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" }
       );
+    },
+    { scope: heroRef }
+  );
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
 
       gsap.utils.toArray<HTMLElement>(".service-card").forEach((card) => {
         gsap.fromTo(
@@ -175,7 +185,7 @@ export default function ServicesPage() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.75,
+            duration: 0.55,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
@@ -205,11 +215,14 @@ export default function ServicesPage() {
           </div>
 
           <h1
-            className="services-hero-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight text-[#111111] leading-[0.95] mb-6"
+            className="services-hero-title text-[clamp(2.25rem,7.5vw,6rem)] font-bold uppercase tracking-tight text-[#111111] leading-[0.98] mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
             SERVICES BUILT <br />
-            <span className="text-[#FF7139]">FOR COMMERCIAL GROWTH</span>.
+            <span className="text-[#FF7139]">
+              FOR COMMERCIAL
+              <br className="sm:hidden" /> GROWTH
+            </span>.
           </h1>
 
           <p
@@ -234,7 +247,7 @@ export default function ServicesPage() {
             <div
               key={service.id}
               id={service.id}
-              className="service-card rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white p-8 sm:p-12 md:p-14 shadow-sm transition-all duration-300 hover:border-[#111111] hover:shadow-md"
+              className="service-card motion-card rounded-2xl md:rounded-3xl border border-[#DDDDDA] bg-white p-8 sm:p-12 md:p-14 shadow-sm transition-all duration-300 hover:border-[#111111] hover:shadow-md"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                 {/* Left: Number and Title */}

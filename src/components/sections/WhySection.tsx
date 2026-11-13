@@ -87,23 +87,38 @@ export function WhySection() {
       ).matches;
       if (prefersReduced) return;
 
-      gsap.utils.toArray<HTMLElement>(".why-card").forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 35 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
+      gsap.fromTo(
+        ".section-intro",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".section-intro",
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".why-card",
+        { opacity: 0, y: 35 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".why-card-grid",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
           }
-        );
-      });
+        }
+      );
     },
     { scope: containerRef }
   );
@@ -116,7 +131,7 @@ export function WhySection() {
     >
       <div className="max-w-[1440px] mx-auto">
         {/* SECTION HEADER HUD */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
+        <div className="section-intro flex flex-col md:flex-row md:items-end justify-between pb-8 mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
               <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
@@ -139,14 +154,14 @@ export function WhySection() {
         </div>
 
         {/* 4 CORE DIFFERENTIATORS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 sm:mb-24">
+        <div className="why-card-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 sm:mb-24">
           {differentiators.map((diff) => {
             const Icon = diff.icon;
             return (
               <div
                 key={diff.number}
                 data-cursor="STANDARD"
-                className="why-card group relative p-8 rounded-2xl border border-[#DDDDDA] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#111111] hover:shadow-[0_12px_36px_rgba(17,17,17,0.06)]"
+                className="why-card motion-card group relative p-8 rounded-2xl border border-[#DDDDDA] bg-white flex flex-col justify-between transition-all duration-300 hover:border-[#111111] hover:shadow-[0_12px_36px_rgba(17,17,17,0.06)]"
               >
                 <div>
                   <div className="flex items-center justify-between pb-6 border-b border-[#DDDDDA]/60">
