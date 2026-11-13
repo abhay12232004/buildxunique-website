@@ -1,16 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, AlertCircle, Shield } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PRICING_PACKAGES } from "@/lib/pricingData";
 import { cn } from "@/lib/utils";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function PricingPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [billingChoice, setBillingChoice] = useState<"deposit" | "full">("deposit");
 
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      gsap.fromTo(
+        ".pricing-hero-title",
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+      );
+      gsap.fromTo(
+        ".pricing-hero-copy",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.12,
+          ease: "power2.out",
+        }
+      );
+      gsap.fromTo(
+        ".pricing-card",
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".pricing-card-grid",
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    },
+    { scope: containerRef }
+  );
+
   return (
-    <div className="pt-28 pb-24 md:pb-36 bg-[#F5F5F2] min-h-screen">
+    <div ref={containerRef} className="pt-28 pb-24 md:pb-36 bg-[#F5F5F2] min-h-screen">
       {/* Header */}
       <section className="px-6 md:px-10 lg:px-16 mb-16 md:mb-24">
         <div className="max-w-[1440px] mx-auto border-b border-[#DDDDDA] pb-12 sm:pb-16">
@@ -25,7 +74,7 @@ export default function PricingPage() {
           </div>
 
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl font-bold uppercase tracking-tight text-[#111111] leading-[0.95] mb-6"
+            className="pricing-hero-title text-4xl sm:text-6xl md:text-7xl font-bold uppercase tracking-tight text-[#111111] leading-[0.95] mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
             TRANSPARENT VALUE. <br />
@@ -33,7 +82,7 @@ export default function PricingPage() {
           </h1>
 
           <p
-            className="text-base sm:text-lg text-[#777777] max-w-2xl leading-relaxed mb-8"
+            className="pricing-hero-copy text-base sm:text-lg text-[#777777] max-w-2xl leading-relaxed mb-8"
             style={{ fontFamily: "var(--font-body)" }}
           >
             We provide milestone-based pricing tailored to project complexity.
@@ -91,7 +140,7 @@ export default function PricingPage() {
 
       {/* Package Cards */}
       <section className="px-6 md:px-10 lg:px-16 mb-20 md:mb-32">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="pricing-card-grid max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
           {PRICING_PACKAGES.map((pkg) => {
             const payableAmount =
               billingChoice === "deposit"
@@ -102,7 +151,7 @@ export default function PricingPage() {
               <div
                 key={pkg.id}
                 className={cn(
-                  "relative rounded-2xl md:rounded-3xl border p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 hover:shadow-lg",
+                  "pricing-card motion-card relative rounded-2xl md:rounded-3xl border p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 hover:shadow-lg",
                   pkg.popular
                     ? "bg-white border-[#FF7139] shadow-md ring-2 ring-[#FF7139]/20"
                     : "bg-white border-[#DDDDDA] hover:border-[#111111]"

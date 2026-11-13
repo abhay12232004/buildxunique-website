@@ -120,6 +120,22 @@ export function ServicesOverviewSection() {
       ).matches;
       if (prefersReduced) return;
 
+      gsap.fromTo(
+        ".section-intro",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".section-intro",
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
       gsap.utils.toArray<HTMLElement>(".service-row").forEach((row) => {
         gsap.fromTo(
           row,
@@ -127,7 +143,7 @@ export function ServicesOverviewSection() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.7,
+            duration: 0.55,
             ease: "power3.out",
             scrollTrigger: {
               trigger: row,
@@ -149,7 +165,7 @@ export function ServicesOverviewSection() {
     >
       <div className="max-w-[1440px] mx-auto">
         {/* SECTION HEADER HUD */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-12 sm:mb-16 border-b border-[#DDDDDA] gap-6">
+        <div className="section-intro flex flex-col md:flex-row md:items-end justify-between pb-8 mb-12 sm:mb-16 border-b border-[#DDDDDA] gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3 text-xs font-mono tracking-[0.2em] text-[#FF7139] uppercase">
               <span className="w-2 h-2 rounded-full bg-[#FF7139]" />
@@ -181,7 +197,7 @@ export function ServicesOverviewSection() {
               <div
                 key={service.id}
                 className={cn(
-                  "service-row transition-all duration-300",
+                  "service-row motion-card transition-all duration-300",
                   isExpanded ? "bg-white/80 rounded-2xl p-6 sm:p-8 my-4 shadow-[0_8px_30px_rgba(17,17,17,0.04)] border border-[#DDDDDA]" : "py-6 sm:py-8 px-4"
                 )}
               >

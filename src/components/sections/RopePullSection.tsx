@@ -71,15 +71,15 @@ export function RopePullSection() {
       const isDesktop = window.innerWidth >= 768;
       if (!isDesktop) return;
 
-      const totalScrollDistance = (services.length + 1) * window.innerHeight * 0.85;
+      const totalScrollDistance = (services.length + 1) * window.innerHeight * 0.7;
 
-      ScrollTrigger.create({
+      const trigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
         end: `+=${totalScrollDistance}`,
         pin: pinRef.current,
         pinSpacing: true,
-        scrub: 0.5,
+        scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
           const serviceProgress = progress / (services.length / (services.length + 1));
@@ -110,7 +110,7 @@ export function RopePullSection() {
         },
       });
 
-      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+      return () => trigger.kill();
     },
     { scope: sectionRef }
   );
